@@ -1,57 +1,9 @@
-# HackerBot Defense Lab · מעבדת הגנה
+# lomda-cyber (retired)
 
-אימון אבטחת מידע **הגנתי בלבד** בעברית — חדרי תרגול אינטראקטיביים עם סימולציות גרפיות, XP, רמות והתקדמות (בהשראת UX של חדרי למידה כמו TryHackMe, בלי מעבדות תקיפה).
+This repository is retired. It no longer publishes the HackerBot Defense Lab app.
 
-## איך לפתוח
+The canonical lomda is:
 
-1. פתחו את הקובץ:
-   ```
-   /workspace/cyber-defense-lab/index.html
-   ```
-2. בדפדפן מודרני (Chrome / Firefox / Edge / Safari).
-3. אין צורך ב־build, npm או שרת — אפשר לפתוח ישירות (`file://`) או דרך שרת סטטי פשוט:
-   ```bash
-   cd /workspace/cyber-defense-lab
-   python3 -m http.server 8080
-   ```
-   ואז לגלוש אל `http://localhost:8080`
+https://scitedra-labs.web.app/hacker-bot/
 
-ההתקדמות נשמרת ב־**LocalStorage** של הדפדפן.
-
-## מה כלול
-
-| חדר | קושי | תוכן |
-|-----|------|------|
-| 1 · מבצר הסיסמאות | קל | מד חוזק, צ׳קליסט, מדיניות סיסמאות, המחשת זמן ניחוש תיאורטי |
-| 2 · מפת הרשת | קל | SVG אינטראקטיבי + הצבת בקרות + טריאז׳ התחברות חשודה בסדר נכון |
-| 3 · מגן HTTPS | בינוני | אנימציית לחיצת יד TLS + חידון מה מוגן / מה לא |
-| 4 · טריאז׳ התראות SOC | בינוני | הזנת SIEM מדומה — TP / FP / הסלמה + משוב |
-| 5 · מידול איומים | קשה | לוח גרירה: נכסים / איומים / בקרות (נפתח אחרי השלמת האחרים) |
-
-## מבנה קבצים
-
-```
-cyber-defense-lab/
-├── index.html          # נקודת כניסה
-├── css/styles.css      # עיצוב כהה / ניאון
-├── js/
-│   ├── storage.js      # LocalStorage · XP · רמות
-│   ├── rooms-meta.js   # מטא־דאטה של חדרים
-│   ├── room1.js … room5.js
-│   └── app.js          # ניווט ולוח בקרה
-└── README.md
-```
-
-## עקרונות תוכן (Defense-Only)
-
-- אין קוד exploit, payloads, מחרוזות SQL/XSS עובדות, reverse shells או מתכוני פריצה.
-- נושאי OWASP מוצגים רק כ־"מה זה + איך מגינים".
-- זמן ניחוש סיסמה הוא **המחשה קונספטואלית** — לא כלי פריצה.
-
-## איפוס התקדמות
-
-בלוח הבקרה — כפתור **איפוס התקדמות**, או ניקוי LocalStorage עבור האתר.
-
----
-
-🛡️ HackerBot Defense Lab — ללמוד להגן, לא לתקוף.
+Visits to the old GitHub Pages site redirect there.
