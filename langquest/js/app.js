@@ -42,6 +42,10 @@
     else if (name === 'vault') renderVault();
     else if (name === 'listen') LQExtras.listen(view, lang(), back);
     else if (name === 'dict') LQExtras.dictionary(view, lang(), back);
+    else if (name === 'community') {
+      if (window.LQCommunity) LQCommunity.render(view, back);
+      else view.innerHTML = `<section class="card"><p class="muted">${t('cloud.off')}</p></section>`;
+    }
     else if (name === 'review') startReview();
     else if (name === 'awards') LQEngage.renderAwards(view, () => go('map'));
     else if (name === 'chat') {
@@ -142,6 +146,7 @@
       ${LQCourse.mapCard(L.id)}
       </div><aside class="map-side">
       ${cloudCard()}
+      ${window.LQCommunity ? LQCommunity.teaser() : ''}
       ${chatCard()}
       ${LQEngage.questsCard()}
       ${LQEngage.leagueCard()}
@@ -167,6 +172,8 @@
     });
     $('[data-act=test]', view).onclick = testVoice;
     $$('[data-quick]', view).forEach(b => b.onclick = () => go(b.dataset.quick));
+    const comBtn = $('.com-teaser [data-act=community]', view);
+    if (comBtn) comBtn.onclick = () => go('community');
     const cont = $('.continue', view);
     $('[data-act=continue]', view).onclick = () => {
       const { next, station } = cont.dataset;
@@ -254,6 +261,7 @@
           <button class="qbtn" data-quick="listen">${LQIcons.svg('headphones', 20)}<span>${t('quick.listen')}</span></button>
           <button class="qbtn" data-quick="dict">${LQIcons.svg('search', 20)}<span>${t('quick.dict')}</span></button>
           <button class="qbtn ${due ? 'due' : ''}" data-quick="${due ? 'review' : 'vault'}">${LQIcons.svg('book', 20)}<span>${due ? t('quick.review', { n: due }) : t('quick.vault')}</span></button>
+          <button class="qbtn" data-quick="community">${LQIcons.svg('users', 20)}<span>${t('com.short')}</span></button>
         </div>
         <div class="cont-stats">
           <span title="${esc(t('map.streakDays', { n: st.count }))}"><i class="${st.doneToday ? 'lit' : ''}">${LQIcons.svg('flame', 18)}</i> ${st.count}</span>
@@ -292,6 +300,8 @@
   function renderCloudBoxes(root = document) {
     if (window.LQCloud) $$('.cloud-box', root).forEach(h => LQCloud.render(h));
   }
+
+  document.addEventListener('lq:community', () => { if (current === 'map') renderMap(); });
 
   document.addEventListener('lq:cloud', () => {
     // the map's sign-in card appears / disappears with the session (and once the module has loaded)

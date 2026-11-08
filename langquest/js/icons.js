@@ -31,6 +31,7 @@
     turtle: '<path d="M3 16a7 6 0 0 1 14 0z"/><path d="M7 10.5l3 5.5 3-5.5M5 13h10"/><circle cx="19.5" cy="13.5" r="1.8"/><path d="M17 15.5l1.2-.8M6 16v2.5M14 16v2.5"/>',
     prev: '<path d="M15 6l-6 6 6 6"/>',
     next: '<path d="M9 6l6 6-6 6"/>',
+    users: '<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14a6.5 6.5 0 0 1 3.5 6"/>',
     bell: '<path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 20a2 2 0 0 0 4 0"/>',
     user: '<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
     gift: '<rect x="3" y="8" width="18" height="5" rx="1"/><path d="M5 13v8h14v-8M12 8v13M12 8C10 4 6 4 7 7c.5 1.5 5 1 5 1zM12 8c2-4 6-4 5-1-.5 1.5-5 1-5 1z"/>',

@@ -1,0 +1,51 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "tedralingo_community",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "week",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "weekXp",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "tedralingo_community",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "lang",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "xp",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "tedralingo_community",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "lang",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "week",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "weekXp",
+          "order": "DESCENDING"
+        }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}

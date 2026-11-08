@@ -168,6 +168,9 @@
     return Math.max(0, ...Object.values(weeks));
   }
 
+  // this week's key, the same for every learner on a Sunday-started week (the community's weekly board)
+  function weekKey() { return LQStore.dayKey(weekStart(new Date())); }
+
   function league() {
     const xp = weekXp();
     const tier = [...TIERS].reverse().find(x => xp >= x.xp) || null;
@@ -307,5 +310,5 @@
     setTimeout(() => URL.revokeObjectURL(a.href), 2000);
   }
 
-  window.LQEngage = { track, todaysQuests, questsCard, leagueCard, renderAwards, level, league, freezeNotice, drawCard, BADGES, QUESTS };
+  window.LQEngage = { track, todaysQuests, questsCard, leagueCard, renderAwards, level, league, weekKey, freezeNotice, drawCard, BADGES, QUESTS };
 })();
