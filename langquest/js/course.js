@@ -86,13 +86,11 @@
     S.root.innerHTML = `
       <section class="lesson grammar">
         <div class="lesson-top">
-          <button class="btn ghost sm" data-act="exit">${t('common.exit')}</button>
-          <div class="lesson-title">${u.icon} ${esc(local(u.title))}</div>
+          <button class="icon-btn" data-act="exit" aria-label="${t('common.exit')}" title="${t('common.exit')}">✕</button>
+          <div class="lprog" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${progress()}"><i style="width:${progress()}%"></i></div>
           <span class="lv-tag">${u.level}</span>
         </div>
-        <ol class="stepper">
-          ${PHASES.map((p, i) => `<li class="${i < S.phase ? 'done' : i === S.phase ? 'cur' : ''}"><span>${p.icon}</span><em>${t('gr.' + p.id)}</em></li>`).join('')}
-        </ol>
+        <div class="lesson-sub"><span>${u.icon} ${esc(local(u.title))}</span><span class="step-chip">${ph.icon} ${t('gr.' + ph.id)}</span></div>
         ${LQUI.teacherSays(S.teacher, esc(t('gr.' + ph.id + 'Hint')))}
         <div class="card step-body"></div>
         <div class="lesson-nav">
@@ -106,6 +104,13 @@
     if (skip) skip.onclick = () => { if (S.voice[S.si] == null) S.voice[S.si] = 0; advance(); };
     const body = $('.step-body', S.root);
     ({ explain: renderExplain, examples: renderExamples, practice: renderPractice, speak: renderSpeak })[ph.id](body);
+  }
+
+  // one bar across the four phases (drills and speaking items fill their phase)
+  function progress() {
+    const id = PHASES[S.phase].id;
+    const part = id === 'practice' ? S.di / S.unit.drills.length : id === 'speak' ? S.si / S.speak.length : 0;
+    return Math.round(100 * (S.phase + part) / PHASES.length);
   }
 
   function setNext(on) {
@@ -181,7 +186,7 @@
       b.classList.add(ok ? 'ok' : 'bad');
       if (!ok) {
         b.disabled = true;
-        $('.gr-feedback', body).innerHTML = `<p class="note warn">${t('gr.tryAgain')}</p>`;
+        LQUI.feedback(false, t('gr.tryAgain'));
         return;
       }
       if (S.firstTry[S.di] == null) S.firstTry[S.di] = S.tries === 1;
@@ -189,7 +194,7 @@
       const gap = $('.gap', body);
       gap.textContent = answer;
       gap.classList.add('filled');
-      $('.gr-feedback', body).innerHTML = `<p class="note ok">${S.tries === 1 ? t('gr.correct') : t('gr.gotIt')}</p>`;
+      LQUI.feedback(true, S.tries === 1 ? t('gr.correct') : t('gr.gotIt'));
       LQAudio.speak(before + answer + after, { accent: S.accent });
       setNext(true);
     });

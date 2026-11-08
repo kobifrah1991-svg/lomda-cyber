@@ -80,7 +80,7 @@
 
       'map.dueTitle': 'הגיע זמן התרגול של {t}!', 'map.dueLeft': 'עוד {n} דקות ליעד היומי',
       'map.dueStreak': '— שמרו על רצף של {n} ימים 🔥', 'map.review': '🧠 חזרה',
-      'map.title': 'המסע שלך ב{lang}',
+      'map.title': 'המסע שלך ב{lang}', 'home.start': 'מתחילים', 'home.continue': 'השיעור הבא', 'home.startBtn': '▶ מתחילים', 'home.continueBtn': '▶ המשך', 'home.premiumNext': 'התחנה הבאה פתוחה במנוי Premium', 'home.bossNext': 'אתגר השיחה מחכה לכם', 'home.allDone': 'השלמתם את כל התחנות!', 'home.keepFresh': 'חזרה קצרה שומרת את המילים טריות', 'home.today': '{m}/{g} דק׳ היום', 'home.quests': '{d}/{n} משימות', 'home.yourTeacher': 'המורה שלכם', 'home.changeTeacher': 'החלפה',
       'map.sub': 'שפה מדוברת לחו״ל — 3-5 דקות לתחנה: שומעים, מאטים, משחקים ומדברים.',
       'map.accent': 'מבטא', 'map.testVoice': '🔊 בדיקת קול', 'map.changeLevel': 'שינוי רמה',
       'map.levelPill': '{li} רמה: <b>{level}</b> · קצב {pi} <b>{pace}</b>',
@@ -129,7 +129,7 @@
 
       'step.listen': 'שמיעה וזיהוי', 'step.listen.hint': 'הקשיבו למשפט בקצב טבעי ועקבו אחרי המילה המוארת. לחצו על מילה לפירוש.',
       'step.slow': 'תרגול איטי', 'step.slow.hint': 'אותו משפט — לאט. הקשיבו מילה-אחר-מילה וחזרו בקול.',
-      'step.game': 'משחק חיזוק',
+      'step.game': 'משחק חיזוק', 'lesson.tryAgain': 'לא בדיוק — נסו שוב',
       'step.voice': 'סימולציית דיבור', 'step.voice.hint': 'אמרו את המשפט למיקרופון — ירוק = נהגה נכון, אדום = לשפר.',
       'game.pic': 'צליל ← תמונה', 'game.pic.hint': 'הקשיבו ובחרו את התמונה שמתאימה למשפט.',
       'game.gap': 'השלימו את החסר', 'game.gap.hint': 'הקשיבו ובחרו את המילה החסרה.',
@@ -254,7 +254,7 @@
 
       'map.dueTitle': "It's {t} — practice time!", 'map.dueLeft': '{n} more min to your daily goal',
       'map.dueStreak': '— keep your {n}-day streak 🔥', 'map.review': '🧠 Review',
-      'map.title': 'Your {lang} journey',
+      'map.title': 'Your {lang} journey', 'home.start': 'Start here', 'home.continue': 'Next lesson', 'home.startBtn': '▶ Start', 'home.continueBtn': '▶ Continue', 'home.premiumNext': 'The next stop is part of Premium', 'home.bossNext': 'Your conversation challenge is waiting', 'home.allDone': 'You finished every stop!', 'home.keepFresh': 'A quick review keeps the words fresh', 'home.today': '{m}/{g} min today', 'home.quests': '{d}/{n} quests', 'home.yourTeacher': 'Your teacher', 'home.changeTeacher': 'Change',
       'map.sub': 'Spoken language for travel — 3–5 minutes per stop: listen, slow down, play and speak.',
       'map.accent': 'Accent', 'map.testVoice': '🔊 Test voice', 'map.changeLevel': 'Change level',
       'map.levelPill': '{li} Level: <b>{level}</b> · pace {pi} <b>{pace}</b>',
@@ -304,7 +304,7 @@
 
       'step.listen': 'Listen & feel', 'step.listen.hint': 'Listen at natural speed and follow the highlighted word. Tap a word for its meaning.',
       'step.slow': 'Slow practice', 'step.slow.hint': 'Same sentence — slowly. Listen word by word and repeat aloud.',
-      'step.game': 'Practice game',
+      'step.game': 'Practice game', 'lesson.tryAgain': 'Not quite — try again',
       'step.voice': 'Speaking check', 'step.voice.hint': 'Say the sentence into the mic — green = right, red = needs work.',
       'game.pic': 'Sound → picture', 'game.pic.hint': 'Listen and pick the picture that matches the sentence.',
       'game.gap': 'Fill the gap', 'game.gap.hint': 'Listen and pick the missing word.',
@@ -430,7 +430,7 @@
 
       'map.dueTitle': 'حان وقت التدريب ({t})!', 'map.dueLeft': 'بقيت {n} دقائق لهدفكم اليومي',
       'map.dueStreak': '— حافظوا على سلسلة {n} أيام 🔥', 'map.review': '🧠 مراجعة',
-      'map.title': 'رحلتكم مع {lang}',
+      'map.title': 'رحلتكم مع {lang}', 'home.start': 'لنبدأ', 'home.continue': 'الدرس التالي', 'home.startBtn': '▶ ابدأوا', 'home.continueBtn': '▶ تابعوا', 'home.premiumNext': 'المحطة التالية ضمن اشتراك Premium', 'home.bossNext': 'تحدي المحادثة بانتظاركم', 'home.allDone': 'أنهيتم كل المحطات!', 'home.keepFresh': 'مراجعة قصيرة تُبقي الكلمات حاضرة', 'home.today': '{m}/{g} د اليوم', 'home.quests': '{d}/{n} مهام', 'home.yourTeacher': 'معلّمكم', 'home.changeTeacher': 'تغيير',
       'map.sub': 'لغة محكية للسفر — من 3 إلى 5 دقائق لكل محطة: نستمع، نبطئ، نلعب ونتكلم.',
       'map.accent': 'اللهجة', 'map.testVoice': '🔊 تجربة الصوت', 'map.changeLevel': 'تغيير المستوى',
       'map.levelPill': '{li} المستوى: <b>{level}</b> · الوتيرة {pi} <b>{pace}</b>',
@@ -479,7 +479,7 @@
 
       'step.listen': 'الاستماع والتعرف', 'step.listen.hint': 'استمعوا إلى الجملة بسرعة طبيعية وتابعوا الكلمة المضيئة. اضغطوا على كلمة لمعرفة معناها.',
       'step.slow': 'تدريب بطيء', 'step.slow.hint': 'الجملة نفسها — ببطء. استمعوا كلمة بكلمة وكرروا بصوت عالٍ.',
-      'step.game': 'لعبة تقوية',
+      'step.game': 'لعبة تقوية', 'lesson.tryAgain': 'ليس تمامًا — حاولوا مرة أخرى',
       'step.voice': 'محاكاة الكلام', 'step.voice.hint': 'قولوا الجملة في الميكروفون — الأخضر = صحيح، الأحمر = يحتاج إلى تحسين.',
       'game.pic': 'صوت ← صورة', 'game.pic.hint': 'استمعوا واختاروا الصورة المناسبة للجملة.',
       'game.gap': 'أكملوا الفراغ', 'game.gap.hint': 'استمعوا واختاروا الكلمة الناقصة.',
@@ -604,7 +604,7 @@
 
       'map.dueTitle': 'Время практики — {t}!', 'map.dueLeft': 'Ещё {n} мин до дневной цели',
       'map.dueStreak': '— сохраните серию в {n} дн. 🔥', 'map.review': '🧠 Повторение',
-      'map.title': 'Ваше путешествие: {lang}',
+      'map.title': 'Ваше путешествие: {lang}', 'home.start': 'Начнём', 'home.continue': 'Следующий урок', 'home.startBtn': '▶ Начать', 'home.continueBtn': '▶ Продолжить', 'home.premiumNext': 'Следующая остановка — в Premium', 'home.bossNext': 'Вас ждёт разговорный вызов', 'home.allDone': 'Все остановки пройдены!', 'home.keepFresh': 'Короткое повторение освежит слова', 'home.today': '{m}/{g} мин сегодня', 'home.quests': 'задания {d}/{n}', 'home.yourTeacher': 'Ваш преподаватель', 'home.changeTeacher': 'Сменить',
       'map.sub': 'Разговорный язык для поездок — 3–5 минут на остановку: слушаем, замедляем, играем и говорим.',
       'map.accent': 'Акцент', 'map.testVoice': '🔊 Проверить голос', 'map.changeLevel': 'Изменить уровень',
       'map.levelPill': '{li} Уровень: <b>{level}</b> · темп {pi} <b>{pace}</b>',
@@ -653,7 +653,7 @@
 
       'step.listen': 'Слушаем', 'step.listen.hint': 'Послушайте фразу в естественном темпе и следите за подсвеченным словом. Нажмите на слово, чтобы узнать значение.',
       'step.slow': 'Медленная практика', 'step.slow.hint': 'Та же фраза — медленно. Слушайте слово за словом и повторяйте вслух.',
-      'step.game': 'Игра',
+      'step.game': 'Игра', 'lesson.tryAgain': 'Не совсем — попробуйте ещё',
       'step.voice': 'Проверка речи', 'step.voice.hint': 'Скажите фразу в микрофон — зелёный = верно, красный = нужно улучшить.',
       'game.pic': 'Звук → картинка', 'game.pic.hint': 'Послушайте и выберите подходящую картинку.',
       'game.gap': 'Заполните пропуск', 'game.gap.hint': 'Послушайте и выберите пропущенное слово.',

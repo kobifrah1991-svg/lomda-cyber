@@ -330,6 +330,32 @@
     return a;
   }
 
+  /* ---------- answer feedback: a coloured bar above the lesson buttons, a short tone and a tap of vibration ---------- */
+  let actx = null;
+  function tone(ok) {
+    try {
+      actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+      const notes = ok ? [660, 880] : [300, 220];
+      notes.forEach((f, i) => {
+        const o = actx.createOscillator(), g = actx.createGain(), at = actx.currentTime + i * 0.11;
+        o.type = 'sine'; o.frequency.value = f;
+        g.gain.setValueAtTime(0.0001, at); g.gain.exponentialRampToValueAtTime(0.12, at + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, at + 0.16);
+        o.connect(g).connect(actx.destination); o.start(at); o.stop(at + 0.18);
+      });
+    } catch { /* no audio */ }
+  }
+  function feedback(ok, text) {
+    const nav = $('.lesson-nav, .gr-nav');
+    if (!nav) return toast(text, 1400);
+    let bar = $('.fb-bar', nav.parentNode);
+    if (!bar) { bar = document.createElement('div'); bar.setAttribute('aria-live', 'polite'); nav.parentNode.insertBefore(bar, nav); }
+    bar.className = 'fb-bar ' + (ok ? 'ok' : 'bad');
+    bar.textContent = (ok ? '✓ ' : '✗ ') + text;
+    if (LQStore.getSettings().sfx !== false) tone(ok);
+    if (navigator.vibrate) navigator.vibrate(ok ? 20 : [30, 60, 30]);
+    if (!ok) setTimeout(() => { if (bar.classList.contains('bad')) bar.remove(); }, 1600);
+  }
+
   /* target-language picker: the main languages first, the rest under "More languages" */
   function langGrid(selected) {
     const card = L => {
@@ -351,6 +377,6 @@
     sylHtml, heHtml, translitLine,
     karaoke, breakdown, bindBreakdown, voiceCheck,
     showWordPop, closePop, toast, burst, shuffle, micError,
-    portrait, teacherAvatar, npcAvatar, currentTeacher, teacherCards, teacherSays, langGrid, tdir
+    portrait, teacherAvatar, npcAvatar, currentTeacher, teacherCards, teacherSays, langGrid, tdir, feedback
   };
 })();

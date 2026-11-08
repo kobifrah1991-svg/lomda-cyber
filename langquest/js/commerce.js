@@ -51,7 +51,9 @@
     } catch { /* private mode */ }
   }
 
-  const isLocal = () => ['localhost', '127.0.0.1', ''].includes(location.hostname) || location.protocol === 'file:';
+  // the Android app is served from https://localhost too — it is never a development machine
+  const isNative = () => !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform());
+  const isLocal = () => !isNative() && (['localhost', '127.0.0.1', ''].includes(location.hostname) || location.protocol === 'file:');
   const configured = () => !!CONFIG.licenseApi && PLANS.every(p => !!CONFIG.checkout[p.id]);
   const demoMode = () => !configured() && isLocal();
 

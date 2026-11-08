@@ -83,13 +83,10 @@
     S.root.innerHTML = `
       <section class="lesson">
         <div class="lesson-top">
-          <button class="btn ghost sm" data-act="exit">${t('common.exit')}</button>
-          <div class="lesson-title">${S.meta.icon} ${esc(f(S.meta, 'name'))}</div>
-          <div class="pdots">${S.phrases.map((_, i) => `<i class="${i < S.pi ? 'done' : i === S.pi ? 'cur' : ''}"></i>`).join('')}</div>
+          <button class="icon-btn" data-act="exit" aria-label="${t('common.exit')}" title="${t('common.exit')}">✕</button>
+          <div class="lprog" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${progress()}"><i style="width:${progress()}%"></i></div>
         </div>
-        <ol class="stepper">
-          ${STEPS.map((s, i) => `<li class="${i < S.step ? 'done' : i === S.step ? 'cur' : ''}"><span>${s.icon}</span><em>${t('step.' + s.id)}</em></li>`).join('')}
-        </ol>
+        <div class="lesson-sub"><span>${S.meta.icon} ${esc(f(S.meta, 'name'))}</span><span class="step-chip">${step.icon} ${t('step.' + step.id)}</span></div>
         ${LQUI.teacherSays(S.teacher, `${step.id === 'game' ? `<b>${t('game.' + game)}</b> · ` : ''}${esc(hint)}`)}
         <div class="card step-body"></div>
         <div class="lesson-nav">
@@ -111,6 +108,9 @@
   }
 
   function isLast() { return S.step === STEPS.length - 1 && S.pi === S.phrases.length - 1; }
+
+  // one bar for the whole lesson: every step × every phrase
+  function progress() { return Math.round(100 * (S.step * S.phrases.length + S.pi) / (STEPS.length * S.phrases.length)); }
 
   function setNext(on) {
     S.canNext = on;
@@ -226,9 +226,10 @@
         if (S.gameTries === 1) LQEngage.track('perfect');
       }
       setNext(true);
-      toast(S.gameTries === 1 ? t('lesson.correct') : t('lesson.correct2'), 1400);
+      LQUI.feedback(true, S.gameTries === 1 ? t('lesson.correct') : t('lesson.correct2'));
     } else {
       markMissed(S.pi);
+      LQUI.feedback(false, t('lesson.tryAgain'));
     }
   }
 

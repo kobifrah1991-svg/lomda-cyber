@@ -225,7 +225,8 @@
   /** Demo: walk through the scenario station's Boss dialogue (already translated) with its phrases as suggestions. */
   async function demoReply() {
     await new Promise(r => setTimeout(r, 700));
-    const st = LQData.LANGS[C.lang].stations[C.scenario === 'free' ? 'smalltalk' : C.scenario];
+    // the free-chat demo replays the café scene: its lines carry no other character's name
+    const st = LQData.LANGS[C.lang].stations[C.scenario === 'free' ? 'cafe' : C.scenario];
     const lines = [st.boss.intro, ...st.boss.turns.map(x => x.reply)];
     const line = lines[C.demoStep % lines.length];
     const next = st.boss.turns[C.demoStep % st.boss.turns.length];

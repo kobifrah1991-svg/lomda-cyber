@@ -21,6 +21,8 @@
     LQAudio.stop();
     LQUI.closePop();
     current = name;
+    // focus mode: lessons, conversations and grammar hide the header's counters
+    document.body.classList.toggle('focus', ['lesson', 'boss', 'grammar', 'review', 'chat'].includes(name));
     window.scrollTo({ top: 0, behavior: 'smooth' });
     const back = () => go('map');
     if ((name === 'lesson' || name === 'boss') && !LQCommerce.canOpen(STATIONS.findIndex(x => x.id === params.station))) {
@@ -94,15 +96,14 @@
         <div><b>${esc(t('map.dueTitle', { t: slot }))}</b><small>${t('map.dueLeft', { n: Math.max(1, goalMin - mins) })} ${st.count ? t('map.dueStreak', { n: st.count }) : ''}</small></div>
         <button class="btn primary" data-act="due">${nextStation ? `▶️ ${nextStation.icon} ${esc(f(nextStation, 'name'))}` : t('map.review')}</button>
       </section>` : ''}
+      ${continueCard(L, nextStation, doneCount, st, mins, goalMin)}
       <section class="hero">
         <div>
           <h1>${esc(t('map.title', { lang: f(L, 'name') }))} <span class="flag">${L.flag}</span></h1>
-          <p class="muted">${t('map.sub')}</p>
-          <div class="teacher-pick">
-            <div class="tp-head"><b>${t('teach.choose')}</b><button class="pill ghost" data-act="test">${t('map.testVoice')}</button></div>
-            ${LQUI.teacherCards(L.id, s.accent[L.id] || L.accents[0].code)}
+          <div class="hero-row">
+            <button class="pace-pill" data-act="level" title="${t('map.changeLevel')}">${t('map.levelPill', { li: lvl.icon, level: esc(f(lvl, 'name')), pi: pace.icon, pace: esc(f(pace, 'name')) })} <span class="muted">✎</span></button>
           </div>
-          <button class="pace-pill" data-act="level" title="${t('map.changeLevel')}">${t('map.levelPill', { li: lvl.icon, level: esc(f(lvl, 'name')), pi: pace.icon, pace: esc(f(pace, 'name')) })} <span class="muted">✎</span></button>
+          ${teacherPick(L, s)}
         </div>
       </section>
 
@@ -121,11 +122,11 @@
                 <div class="node-body">
                   <div class="node-name">${i + 1}. ${esc(f(x, 'name'))} ${premiumLock ? `<span class="prem-badge">${t('pay.badge')}</span>` : ''}</div>
                   <div class="node-meta">${p.lesson ? t('map.done', { n: p.bestVoice }) : open ? t('map.openMeta') : t('map.locked')}${p.boss ? t('map.bossBeaten') : ''}</div>
-                  <div class="node-actions">
+                  ${open || p.lesson ? `<div class="node-actions">
                     ${premiumLock && open ? `<button class="btn sm premium" data-act="paywall">${t('pay.upgrade')}</button>` : `
                     <button class="btn sm ${p.lesson ? 'ghost' : 'primary'}" data-lesson="${x.id}" ${open ? '' : 'disabled'}>${p.lesson ? t('map.redo') : t('map.start')}</button>`}
                     <button class="btn sm boss" data-boss="${x.id}" ${bossOpen ? '' : 'disabled'} title="${bossOpen ? '' : t('map.bossLocked')}">👑 Boss</button>
-                  </div>
+                  </div>` : ''}
                 </div>
               </li>`;
           }).join('')}
@@ -158,6 +159,14 @@
       testVoice();
     });
     $('[data-act=test]', view).onclick = testVoice;
+    const cont = $('.continue', view);
+    $('[data-act=continue]', view).onclick = () => {
+      const { next, station } = cont.dataset;
+      if (next === 'next') go('lesson', { lang: L.id, station });
+      else if (next === 'boss') go('boss', { lang: L.id, station });
+      else if (next === 'paywall') openPaywall();
+      else go(due ? 'review' : 'vault');
+    };
     $('[data-act=level]', view).onclick = () => openLevelPicker(L.id);
     $('[data-act=reminders]', view).onclick = openReminders;
     const dueBtn = $('[data-act=due]', view);
@@ -175,10 +184,57 @@
     $('[data-act=vault]', view).onclick = () => go('vault');
   }
 
+  /* ---------- home: the one next step, first ---------- */
+  function continueCard(L, nextStation, doneCount, st, mins, goalMin) {
+    const idx = nextStation ? STATIONS.indexOf(nextStation) : -1;
+    const premium = nextStation && !LQCommerce.canOpen(idx);
+    const unbeaten = !nextStation && STATIONS.find(x => !LQStore.stationProgress(L.id, x.id).boss);
+    const q = LQEngage.todaysQuests();
+    const qDone = q.list.filter(x => x.done).length;
+    const pct = Math.min(100, Math.round(100 * st.todaySec / st.goalSec));
+    let act, title, meta, icon;
+    if (nextStation && premium) { act = 'paywall'; icon = nextStation.icon; title = f(nextStation, 'name'); meta = t('home.premiumNext'); }
+    else if (nextStation) { act = 'next'; icon = nextStation.icon; title = f(nextStation, 'name'); meta = t('map.openMeta'); }
+    else if (unbeaten) { act = 'boss'; icon = '👑'; title = f(unbeaten, 'name'); meta = t('home.bossNext'); }
+    else { act = 'review'; icon = '📒'; title = t('home.allDone'); meta = t('home.keepFresh'); }
+    return `
+      <section class="card continue" data-next="${act}" data-station="${(nextStation || unbeaten || {}).id || ''}">
+        <div class="cont-main">
+          <span class="cont-ico">${icon}</span>
+          <div class="cont-text">
+            <small class="cont-kicker">${doneCount ? t('home.continue') : t('home.start')}</small>
+            <b>${esc(title)}</b>
+            <small class="muted">${esc(meta)}</small>
+          </div>
+          <button class="btn primary cont-go" data-act="continue">${doneCount ? t('home.continueBtn') : t('home.startBtn')}</button>
+        </div>
+        <div class="cont-stats">
+          <span title="${esc(t('map.streakDays', { n: st.count }))}"><i class="${st.doneToday ? 'lit' : ''}">🔥</i> ${st.count}</span>
+          <span class="cont-goal" title="${esc(t('map.goalProgress', { m: mins, g: goalMin }))}"><span class="ring" style="--p:${pct}"></span> ${t('home.today', { m: mins, g: goalMin })}</span>
+          <span>🎯 ${t('home.quests', { d: qDone, n: q.list.length })}</span>
+        </div>
+      </section>`;
+  }
+
+  // the teacher, collapsed: one line with the current teacher; open it to switch
+  function teacherPick(L, s) {
+    const tc = LQUI.currentTeacher();
+    if (!tc) return '';
+    return `
+      <details class="teacher-pick">
+        <summary>${LQUI.teacherAvatar(tc, 40, false)}<span><small class="muted">${t('home.yourTeacher')}</small><b>${esc(tc.name)}</b></span><span class="tp-change">${t('home.changeTeacher')}</span></summary>
+        <div class="tp-head"><b>${t('teach.choose')}</b><button class="pill ghost" data-act="test">${t('map.testVoice')}</button></div>
+        ${LQUI.teacherCards(L.id, s.accent[L.id] || L.accents[0].code)}
+      </details>`;
+  }
+
   /* ---------- cloud save (js/cloud.js loads as a module, after this file) ---------- */
   function cloudCard() {
     const C = window.LQCloud;
     if (!C || C.user || C.state === 'off') return '';
+    // ask for an account once the learner has something worth saving
+    const L = LANGS[lang()];
+    if (!STATIONS.some(x => LQStore.stationProgress(L.id, x.id).lesson)) return '';
     return `
       <section class="card cloud-cta">
         <h3>☁️ ${esc(t('cloud.mapTitle'))}</h3>
