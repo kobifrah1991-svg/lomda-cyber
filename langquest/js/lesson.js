@@ -365,20 +365,24 @@
     LQStore.addXp(xp);
     LQApp.refreshHeader();
     burst();
+    LQUI.fanfare();
     setTimeout(() => LQEngage.track('lesson'), 900);
+    const st = LQStore.getStreak();
+    const goalPct = Math.min(100, Math.round(100 * st.todaySec / st.goalSec));
     const { meta, onExit, missed, teacher } = S;
     const lang = S.lang;
     stop();
     LQApp.view.innerHTML = `
       <section class="card finish">
-        <div class="finish-emoji">${meta.icon}</div>
+        <div class="finish-ico">${LQIcons.station(meta.id, 46)}</div>
         <h2>${esc(t('fin.title', { name: f(meta, 'name') }))}</h2>
         ${LQUI.teacherSays(teacher, esc(t('teach.done')), 52)}
         <div class="stats">
-          <div><b>+${xp}</b><span>XP</span></div>
+          <div><b>+${xp}</b><span>${t('xp.unit')}</span></div>
           <div><b>${avgVoice}%</b><span>${t('fin.accuracy')}</span></div>
           <div><b>${firstTry}/3</b><span>${t('fin.games')}</span></div>
         </div>
+        <div class="fin-goal"><span class="ring big" style="--p:${goalPct}"></span><span><b>${t('fin.goal', { m: Math.floor(st.todaySec / 60), g: st.goalSec / 60 })}</b><small class="muted">${st.doneToday ? t('fin.goalDone') : t('fin.goalLeft', { n: Math.max(1, Math.ceil((st.goalSec - st.todaySec) / 60)) })}</small></span></div>
         ${missed.size ? `<p class="note">${t('fin.saved', { n: missed.size })}</p>` : ''}
         ${!prev.lesson ? `<p class="note">${t('fin.unlocked')}</p>` : ''}
         <div class="row center">

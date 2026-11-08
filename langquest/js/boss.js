@@ -25,7 +25,7 @@
       <section class="boss-wrap">
         <div class="lesson-top">
           <button class="btn ghost sm" data-act="exit">${t('common.exit')}</button>
-          <div class="lesson-title">👑 Audio Boss · ${esc(f(B.meta, 'name'))}</div>
+          <div class="lesson-title">${LQIcons.svg('crown', 20)} ${t('boss.name')} · ${esc(f(B.meta, 'name'))}</div>
           <div class="pdots">${B.boss.turns.map(() => '<i></i>').join('')}</div>
         </div>
         <div class="card boss">
@@ -189,7 +189,7 @@
       <div class="boss-end ${won ? 'won' : ''}">
         <div class="big-emoji">${won ? '🏆' : '💪'}</div>
         <h3>${won ? t('boss.won') : t('boss.lost')}</h3>
-        <p>${t('boss.score')} <b>${total}%</b>${won && !prev.boss ? ' · +50 XP' : ''}</p>
+        <p>${t('boss.score')} <b>${total}%</b>${won && !prev.boss ? ` · +50 ${t('xp.unit')}` : ''}</p>
         <div class="row center">
           <button class="btn ghost" data-act="again">${t('common.again')}</button>
           <button class="btn primary" data-act="map">${t('common.toMap')}</button>

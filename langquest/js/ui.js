@@ -344,6 +344,20 @@
       });
     } catch { /* no audio */ }
   }
+  function fanfare() {
+    if (LQStore.getSettings().sfx === false) return;
+    try {
+      actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+      [523, 659, 784, 1047].forEach((f, i) => {
+        const o = actx.createOscillator(), g = actx.createGain(), at = actx.currentTime + i * 0.12;
+        o.type = 'triangle'; o.frequency.value = f;
+        g.gain.setValueAtTime(0.0001, at); g.gain.exponentialRampToValueAtTime(0.14, at + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, at + (i === 3 ? 0.5 : 0.18));
+        o.connect(g).connect(actx.destination); o.start(at); o.stop(at + 0.55);
+      });
+    } catch { /* no audio */ }
+    if (navigator.vibrate) navigator.vibrate([20, 40, 20, 40, 60]);
+  }
+
   function feedback(ok, text) {
     const nav = $('.lesson-nav, .gr-nav');
     if (!nav) return toast(text, 1400);
@@ -351,8 +365,10 @@
     if (!bar) { bar = document.createElement('div'); bar.setAttribute('aria-live', 'polite'); nav.parentNode.insertBefore(bar, nav); }
     bar.className = 'fb-bar ' + (ok ? 'ok' : 'bad');
     bar.textContent = (ok ? '✓ ' : '✗ ') + text;
-    if (LQStore.getSettings().sfx !== false) tone(ok);
-    if (navigator.vibrate) navigator.vibrate(ok ? 20 : [30, 60, 30]);
+    if (LQStore.getSettings().sfx !== false) {
+      tone(ok);
+      if (navigator.vibrate) navigator.vibrate(ok ? 20 : [30, 60, 30]);
+    }
     if (!ok) setTimeout(() => { if (bar.classList.contains('bad')) bar.remove(); }, 1600);
   }
 
@@ -377,6 +393,6 @@
     sylHtml, heHtml, translitLine,
     karaoke, breakdown, bindBreakdown, voiceCheck,
     showWordPop, closePop, toast, burst, shuffle, micError,
-    portrait, teacherAvatar, npcAvatar, currentTeacher, teacherCards, teacherSays, langGrid, tdir, feedback
+    portrait, teacherAvatar, npcAvatar, currentTeacher, teacherCards, teacherSays, langGrid, tdir, feedback, fanfare
   };
 })();

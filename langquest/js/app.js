@@ -18,11 +18,12 @@
     LQCourse.stop();
     LQBoss.stop();
     LQTutor.stop();
+    LQExtras.stopListen();
     LQAudio.stop();
     LQUI.closePop();
     current = name;
     // focus mode: lessons, conversations and grammar hide the header's counters
-    document.body.classList.toggle('focus', ['lesson', 'boss', 'grammar', 'review', 'chat'].includes(name));
+    document.body.classList.toggle('focus', ['lesson', 'boss', 'grammar', 'review', 'chat', 'listen'].includes(name));
     window.scrollTo({ top: 0, behavior: 'smooth' });
     const back = () => go('map');
     if ((name === 'lesson' || name === 'boss') && !LQCommerce.canOpen(STATIONS.findIndex(x => x.id === params.station))) {
@@ -39,6 +40,8 @@
       LQCourse.start(view, params.lang, params.unit, back);
     }
     else if (name === 'vault') renderVault();
+    else if (name === 'listen') LQExtras.listen(view, lang(), back);
+    else if (name === 'dict') LQExtras.dictionary(view, lang(), back);
     else if (name === 'review') startReview();
     else if (name === 'awards') LQEngage.renderAwards(view, () => go('map'));
     else if (name === 'chat') {
@@ -64,14 +67,16 @@
     LQI18n.apply();
     $('#hdrLang').innerHTML = `<span class="flag">${L.flag}</span><span class="hide-sm">${esc(f(L, 'name'))}</span>`;
     $('#hdrStreak').innerHTML = `
-      <span class="fire-ring ${st.doneToday ? 'lit' : ''}" style="--p:${Math.min(100, Math.round(100 * st.todaySec / st.goalSec))}"><span>🔥</span></span>
+      <span class="fire-ring ${st.doneToday ? 'lit' : ''}" style="--p:${Math.min(100, Math.round(100 * st.todaySec / st.goalSec))}"><span>${LQIcons.svg('flame', 16)}</span></span>
       <b>${st.count}</b>`;
     $('#hdrStreak').title = st.doneToday
       ? t('hdr.streakDone', { n: st.count })
       : t('hdr.streakTip', { m: Math.floor(st.todaySec / 60), g: st.goalSec / 60, n: st.count });
     document.body.classList.toggle('onboarding', current === 'onboarding');
-    $('#hdrXp').innerHTML = `⭐ <b>${LQStore.getXp()}</b><small class="lv-chip">${LQEngage.level().n}</small>`;
-    $('#hdrVault').innerHTML = `📒${due ? `<i class="badge">${due}</i>` : ''}`;
+    $('#hdrXp').innerHTML = `<span class="hx-star">${LQIcons.svg('star', 18)}</span><b>${LQStore.getXp()}</b><small class="lv-chip" title="${esc(t('hdr.level'))}">${t('hdr.levelShort', { n: LQEngage.level().n })}</small>`;
+    $('#hdrVault').innerHTML = `${LQIcons.svg('book', 20)}${due ? `<i class="badge">${due}</i>` : ''}`;
+    $('#hdrSettings').innerHTML = LQIcons.svg('settings', 20);
+    $('#hdrInstall').innerHTML = LQIcons.svg('download', 20);
   }
 
   /* ---------- world map ---------- */
@@ -96,7 +101,7 @@
         <div><b>${esc(t('map.dueTitle', { t: slot }))}</b><small>${t('map.dueLeft', { n: Math.max(1, goalMin - mins) })} ${st.count ? t('map.dueStreak', { n: st.count }) : ''}</small></div>
         <button class="btn primary" data-act="due">${nextStation ? `▶️ ${nextStation.icon} ${esc(f(nextStation, 'name'))}` : t('map.review')}</button>
       </section>` : ''}
-      ${continueCard(L, nextStation, doneCount, st, mins, goalMin)}
+      ${continueCard(L, nextStation, doneCount, st, mins, goalMin, due)}
       <section class="hero">
         <div>
           <h1>${esc(t('map.title', { lang: f(L, 'name') }))} <span class="flag">${L.flag}</span></h1>
@@ -109,28 +114,30 @@
 
       <section class="map card">
         <div class="map-head"><h2><span class="chapter-tag">${t('gr.chapter1')}</span> ${t('map.mapTitle')}</h2><span class="muted">${t('map.stationsCount', { d: doneCount, n: STATIONS.length })}</span></div>
-        <ol class="path">
+        <div class="trail">
           ${STATIONS.map((x, i) => {
             const p = LQStore.stationProgress(L.id, x.id);
             const open = LQStore.isStationUnlocked(L.id, STATIONS, i);
             const premiumLock = !LQCommerce.canOpen(i);
-            const state = p.lesson ? 'done' : open ? 'open' : 'locked';
-            const bossOpen = p.lesson || (pace.bossFree && open);
+            const cur = nextStation && nextStation.id === x.id;
+            const state = p.lesson ? 'done' : cur ? 'current' : open && !premiumLock ? 'open' : 'locked';
+            const bossOpen = !premiumLock && (p.lesson || (pace.bossFree && open));
+            const bossState = p.boss ? 'beaten' : bossOpen ? 'open' : 'locked';
+            const x1 = TRAIL[i % TRAIL.length], x2 = TRAIL[(i + 1) % TRAIL.length];
             return `
-              <li class="node ${state}" style="--i:${i}">
-                <div class="node-ico">${open ? x.icon : '🔒'}</div>
-                <div class="node-body">
-                  <div class="node-name">${i + 1}. ${esc(f(x, 'name'))} ${premiumLock ? `<span class="prem-badge">${t('pay.badge')}</span>` : ''}</div>
-                  <div class="node-meta">${p.lesson ? t('map.done', { n: p.bestVoice }) : open ? t('map.openMeta') : t('map.locked')}${p.boss ? t('map.bossBeaten') : ''}</div>
-                  ${open || p.lesson ? `<div class="node-actions">
-                    ${premiumLock && open ? `<button class="btn sm premium" data-act="paywall">${t('pay.upgrade')}</button>` : `
-                    <button class="btn sm ${p.lesson ? 'ghost' : 'primary'}" data-lesson="${x.id}" ${open ? '' : 'disabled'}>${p.lesson ? t('map.redo') : t('map.start')}</button>`}
-                    <button class="btn sm boss" data-boss="${x.id}" ${bossOpen ? '' : 'disabled'} title="${bossOpen ? '' : t('map.bossLocked')}">👑 Boss</button>
-                  </div>` : ''}
-                </div>
-              </li>`;
+              <div class="stop ${state} ${premiumLock ? 'premium' : ''}" style="--x:${x1};--i:${i}">
+                <button class="stop-btn" data-stop="${x.id}" aria-label="${esc(`${i + 1}. ${f(x, 'name')}`)}">
+                  ${state === 'locked' ? LQIcons.svg('lock', 30) : LQIcons.station(x.id, 34)}
+                  ${p.lesson ? `<span class="stop-check">${LQIcons.svg('check', 14)}</span>` : ''}
+                </button>
+                ${cur ? `<span class="stop-start">${premiumLock ? t('home.premiumShort') : t('map.startHere')}</span>` : ''}
+                <span class="stop-label">${i + 1}. ${esc(f(x, 'name'))}</span>
+              </div>
+              <div class="boss-stop ${bossState}" style="--x:${(x1 + x2) / 2}">
+                <button class="boss-btn" data-bossstop="${x.id}" aria-label="${esc(t('boss.name') + ' · ' + f(x, 'name'))}" title="${esc(t('boss.name'))}">${LQIcons.svg(bossState === 'locked' ? 'lock' : 'crown', 18)}</button>
+              </div>`;
           }).join('')}
-        </ol>
+        </div>
       </section>
       ${LQCourse.mapCard(L.id)}
       </div><aside class="map-side">
@@ -159,6 +166,7 @@
       testVoice();
     });
     $('[data-act=test]', view).onclick = testVoice;
+    $$('[data-quick]', view).forEach(b => b.onclick = () => go(b.dataset.quick));
     const cont = $('.continue', view);
     $('[data-act=continue]', view).onclick = () => {
       const { next, station } = cont.dataset;
@@ -171,8 +179,8 @@
     $('[data-act=reminders]', view).onclick = openReminders;
     const dueBtn = $('[data-act=due]', view);
     if (dueBtn) dueBtn.onclick = () => (nextStation ? go('lesson', { lang: L.id, station: nextStation.id }) : go(due ? 'review' : 'map'));
-    $$('[data-lesson]', view).forEach(b => b.onclick = () => go('lesson', { lang: L.id, station: b.dataset.lesson }));
-    $$('[data-boss]', view).forEach(b => b.onclick = () => go('boss', { lang: L.id, station: b.dataset.boss }));
+    $$('[data-stop]', view).forEach(b => b.onclick = () => openStop(L, b.dataset.stop));
+    $$('[data-bossstop]', view).forEach(b => b.onclick = () => openStop(L, b.dataset.bossstop, true));
     $$('[data-unit]', view).forEach(b => b.onclick = () => go('grammar', { lang: L.id, unit: b.dataset.unit }));
     $$('[data-act=paywall]', view).forEach(b => b.onclick = openPaywall);
     renderCloudBoxes(view);
@@ -184,8 +192,42 @@
     $('[data-act=vault]', view).onclick = () => go('vault');
   }
 
+  // the map's path swings left and right (in units of the trail's step width)
+  const TRAIL = [0, 0.9, 1.4, 0.9, 0, -0.9, -1.4, -0.9];
+
+  /** A stop's sheet: what it holds and what can be done there. */
+  function openStop(L, id, bossFirst) {
+    const i = STATIONS.findIndex(x => x.id === id);
+    const x = STATIONS[i];
+    const p = LQStore.stationProgress(L.id, id);
+    const pace = LQStore.getPace(L.id);
+    const open = LQStore.isStationUnlocked(L.id, STATIONS, i);
+    const premiumLock = !LQCommerce.canOpen(i);
+    const bossOpen = !premiumLock && (p.lesson || (pace.bossFree && open));
+    const phrases = L.stations[id].phrases;
+    const meta = p.lesson ? t('map.done', { n: p.bestVoice }) : open ? t('map.openMeta') : t('map.locked');
+    openModal(`
+      <div class="stop-sheet">
+        <div class="ss-ico ${p.lesson ? 'done' : open ? 'open' : 'locked'}">${LQIcons.station(id, 38)}</div>
+        <h2>${i + 1}. ${esc(f(x, 'name'))}</h2>
+        <p class="muted">${esc(meta)}${p.boss ? esc(t('map.bossBeaten')) : ''}</p>
+        <ul class="ss-phrases" dir="${LQUI.tdir(L.id)}">${phrases.map(ph => `<li>${ph.emoji} ${esc(ph.text)}</li>`).join('')}</ul>
+        ${premiumLock ? `<p class="note">${t('home.premiumNext')}</p><button class="btn premium big-cta" data-act="paywall">${LQIcons.svg('star', 18)} ${t('pay.upgrade')}</button>` : `
+        <div class="ss-actions">
+          <button class="btn ${p.lesson ? 'ghost' : 'primary'} big-cta" data-go="lesson" ${open ? '' : 'disabled'}>${LQIcons.svg(p.lesson ? 'redo' : 'play', 18)} ${p.lesson ? t('map.redoLesson') : t('map.startLesson')}</button>
+          <button class="btn boss big-cta" data-go="boss" ${bossOpen ? '' : 'disabled'}>${LQIcons.svg('crown', 18)} ${t('boss.name')}</button>
+        </div>
+        ${!bossOpen ? `<p class="muted small">${t('map.bossLocked')}</p>` : ''}`}
+      </div>`, body => {
+      const pw = $('[data-act=paywall]', body);
+      if (pw) pw.onclick = () => { closeModal(); openPaywall(); };
+      $$('[data-go]', body).forEach(b => b.onclick = () => { closeModal(); go(b.dataset.go, { lang: L.id, station: id }); });
+      if (bossFirst && bossOpen) $('[data-go=boss]', body).focus();
+    });
+  }
+
   /* ---------- home: the one next step, first ---------- */
-  function continueCard(L, nextStation, doneCount, st, mins, goalMin) {
+  function continueCard(L, nextStation, doneCount, st, mins, goalMin, due) {
     const idx = nextStation ? STATIONS.indexOf(nextStation) : -1;
     const premium = nextStation && !LQCommerce.canOpen(idx);
     const unbeaten = !nextStation && STATIONS.find(x => !LQStore.stationProgress(L.id, x.id).boss);
@@ -208,10 +250,15 @@
           </div>
           <button class="btn primary cont-go" data-act="continue">${doneCount ? t('home.continueBtn') : t('home.startBtn')}</button>
         </div>
+        <div class="quick">
+          <button class="qbtn" data-quick="listen">${LQIcons.svg('headphones', 20)}<span>${t('quick.listen')}</span></button>
+          <button class="qbtn" data-quick="dict">${LQIcons.svg('search', 20)}<span>${t('quick.dict')}</span></button>
+          <button class="qbtn ${due ? 'due' : ''}" data-quick="${due ? 'review' : 'vault'}">${LQIcons.svg('book', 20)}<span>${due ? t('quick.review', { n: due }) : t('quick.vault')}</span></button>
+        </div>
         <div class="cont-stats">
-          <span title="${esc(t('map.streakDays', { n: st.count }))}"><i class="${st.doneToday ? 'lit' : ''}">🔥</i> ${st.count}</span>
+          <span title="${esc(t('map.streakDays', { n: st.count }))}"><i class="${st.doneToday ? 'lit' : ''}">${LQIcons.svg('flame', 18)}</i> ${st.count}</span>
           <span class="cont-goal" title="${esc(t('map.goalProgress', { m: mins, g: goalMin }))}"><span class="ring" style="--p:${pct}"></span> ${t('home.today', { m: mins, g: goalMin })}</span>
-          <span>🎯 ${t('home.quests', { d: qDone, n: q.list.length })}</span>
+          <span><i class="q-ico">${LQIcons.svg('target', 18)}</i> ${t('home.quests', { d: qDone, n: q.list.length })}</span>
         </div>
       </section>`;
   }
@@ -390,7 +437,7 @@
         <section class="card finish">
           <div class="finish-emoji">🧠</div>
           <h2>${queue.length ? t('review.doneTitle') : t('review.none')}</h2>
-          ${queue.length ? `<div class="stats"><div><b>${knew}/${queue.length}</b><span>${t('review.knewLabel')}</span></div><div><b>+${xp}</b><span>XP</span></div></div>` : ''}
+          ${queue.length ? `<div class="stats"><div><b>${knew}/${queue.length}</b><span>${t('review.knewLabel')}</span></div><div><b>+${xp}</b><span>${t('xp.unit')}</span></div></div>` : ''}
           <div class="row center"><button class="btn primary" data-act="map">${t('common.toMap')}</button><button class="btn ghost" data-act="vault">${t('common.toVault')}</button></div>
         </section>`;
       $('[data-act=map]', view).onclick = () => go('map');
@@ -435,46 +482,41 @@
     const chosen = LQAudio.pickVoice(accent);
     const pace = LQStore.getPace(L.id);
     const lvl = LQData.LEVELS[pace.level];
+    const row = (icon, label, control, extra = '') => `<div class="srow ${extra}"><span class="srow-ico">${LQIcons.svg(icon, 20)}</span><span class="srow-label">${label}</span><span class="srow-ctl">${control}</span></div>`;
+    const go = (icon, label, value, act) => `<button class="srow link" data-act="${act}"><span class="srow-ico">${LQIcons.svg(icon, 20)}</span><span class="srow-label">${label}</span><span class="srow-val">${value}</span><span class="srow-chev">‹</span></button>`;
+    const sw = (key, on) => `<label class="switch"><input type="checkbox" data-f="${key}" ${on ? 'checked' : ''}><i></i></label>`;
     openModal(`
-      <h2>${t('set.title')}</h2>
-      <div class="set-group">
-        <label class="field"><span>🌐 ${t('common.uiLang')}</span>
-          <select data-f="ui">${Object.entries(LQI18n.UI_LANGS).map(([code, U]) => `<option value="${code}" ${code === LQI18n.ui() ? 'selected' : ''}>${U.flag} ${esc(U.name)}</option>`).join('')}</select>
-        </label>
-        <div class="plan-row"><span>${esc(t('set.levelIn', { lang: f(L, 'name') }))}</span><b>${lvl.icon} ${esc(f(lvl, 'name'))} · ${pace.icon} ${esc(f(pace, 'name'))}</b></div>
-        <label class="field"><span>${t('set.goal')}</span>
-          <select data-f="minutes">${[3, 5, 10, 15].map(m => `<option value="${m}" ${LQStore.getProfile().minutes === m ? 'selected' : ''}>${t('common.minutes', { n: m })}</option>`).join('')}</select>
-        </label>
-        <div class="row">
-          <button class="btn ghost sm" data-act="level">${t('set.changeLevel')}</button>
-          <button class="btn ghost sm" data-act="reminders">${esc(t('set.reminders', { s: LQReminders.summary() }))}</button>
-          <button class="btn ghost sm" data-act="profile">${t('set.profile')}</button>
-        </div>
+      <div class="settings">
+      <div class="set-head"><h2>${t('set.title')}</h2><button class="icon-btn" data-act="close" aria-label="${t('common.close')}">${LQIcons.svg('close', 18)}</button></div>
+      <h3 class="sgroup-title">${t('set.groupLearn')}</h3>
+      <div class="sgroup">
+        ${row('globe', t('common.uiLang'), `<select data-f="ui">${Object.entries(LQI18n.UI_LANGS).map(([code, U]) => `<option value="${code}" ${code === LQI18n.ui() ? 'selected' : ''}>${U.flag} ${esc(U.name)}</option>`).join('')}</select>`)}
+        ${go('trophy', esc(t('set.levelIn', { lang: f(L, 'name') })), `${lvl.icon} ${esc(f(lvl, 'name'))} · ${pace.icon} ${esc(f(pace, 'name'))}`, 'level')}
+        ${row('target', t('set.goal'), `<select data-f="minutes">${[3, 5, 10, 15].map(m => `<option value="${m}" ${LQStore.getProfile().minutes === m ? 'selected' : ''}>${t('common.minutes', { n: m })}</option>`).join('')}</select>`)}
+        ${go('bell', t('set.remindersLabel'), esc(LQReminders.summary()), 'reminders')}
+        ${go('user', t('set.profile'), '', 'profile')}
       </div>
-      <div class="set-group cloud-set"><h3 class="sub">${t('cloud.title')}</h3><div class="cloud-box"></div></div>
-      ${premiumSection()}
-      <h3 class="sub">${t('set.voiceTitle')}</h3>
-      <label class="field"><span>${esc(t('set.accent', { lang: f(L, 'name') }))}</span>
-        <select data-f="accent">${L.accents.map(a => `<option value="${a.code}" ${a.code === accent ? 'selected' : ''}>${a.flag} ${esc(f(a, 'label'))} · ${a.code}</option>`).join('')}</select>
-      </label>
-      <label class="field"><span>${t('set.voice')}</span>
-        <select data-f="voice" ${voices.length ? '' : 'disabled'}>
-          ${voices.length ? voices.map(v => `<option ${chosen && v.name === chosen.name ? 'selected' : ''}>${esc(v.name)}</option>`).join('') : `<option>${t('set.noVoices')}</option>`}
-        </select>
-        <small class="muted">${t('set.voiceHint')}</small>
-      </label>
-      <label class="field"><span>${t('set.slow')} <b data-out>${Math.round(s.slowRate * 100)}%</b></span>
-        <input type="range" min="0.5" max="0.7" step="0.05" value="${s.slowRate}" data-f="rate">
-      </label>
-      <label class="field check"><input type="checkbox" data-f="translit" ${s.translit ? 'checked' : ''}> <span>${t('set.translit')}</span></label>
-      <div class="row">
-        <button class="btn ghost" data-act="test">${t('set.test')}</button>
-        <button class="btn ghost" data-act="test-slow">${t('set.testSlow')}</button>
+      <h3 class="sgroup-title">${t('set.voiceTitle')}</h3>
+      <div class="sgroup">
+        ${row('globe', esc(t('set.accent', { lang: f(L, 'name') })), `<select data-f="accent">${L.accents.map(a => `<option value="${a.code}" ${a.code === accent ? 'selected' : ''}>${a.flag} ${esc(f(a, 'label'))}</option>`).join('')}</select>`)}
+        ${row('volume', t('set.voice'), `<select data-f="voice" ${voices.length ? '' : 'disabled'}>${voices.length ? voices.map(v => `<option ${chosen && v.name === chosen.name ? 'selected' : ''}>${esc(v.name)}</option>`).join('') : `<option>${t('set.noVoices')}</option>`}</select>`)}
+        ${row('turtle', `${t('set.slow')} <b data-out>${Math.round(s.slowRate * 100)}%</b>`, `<input type="range" min="0.5" max="0.7" step="0.05" value="${s.slowRate}" data-f="rate">`, 'wide')}
+        ${row('book', t('set.translit'), sw('translit', s.translit))}
+        ${row('sparkle', t('set.sfx'), sw('sfx', s.sfx !== false))}
+        <div class="srow btns"><button class="btn ghost sm" data-act="test">${LQIcons.svg('play', 16)} ${t('set.test')}</button><button class="btn ghost sm" data-act="test-slow">${LQIcons.svg('turtle', 16)} ${t('set.testSlow')}</button></div>
       </div>
-      <p class="muted small">${LQAudio.canListen ? t('set.micYes') : t('set.micNo')}</p>
-      <hr>
-      <a class="family-line" href="https://scitedra-labs.web.app/${LQI18n.ui() === 'he' ? '' : 'en/'}" data-act="family"><img src="icons/scitedra-labs.svg" alt="" width="22" height="22"> TedraLingo · ${esc(t('set.family'))}</a>
-      <div class="row spread"><button class="btn bad sm" data-act="reset">${t('set.reset')}</button><button class="btn primary" data-act="close">${t('common.close')}</button></div>`, body => {
+      <p class="muted small sgroup-note">${t('set.voiceHint')} ${LQAudio.canListen ? t('set.micYes') : t('set.micNo')}</p>
+      <h3 class="sgroup-title">${t('set.groupAccount')}</h3>
+      <div class="sgroup pad">
+        <div class="set-group cloud-set"><div class="cloud-box"></div></div>
+        ${premiumSection()}
+      </div>
+      <h3 class="sgroup-title">${t('set.groupAbout')}</h3>
+      <div class="sgroup">
+        <a class="srow link family-line" href="https://scitedra-labs.web.app/${LQI18n.ui() === 'he' ? '' : 'en/'}" data-act="family"><span class="srow-ico"><img src="icons/scitedra-labs.svg" alt="" width="22" height="22"></span><span class="srow-label">TedraLingo · ${esc(t('set.family'))}</span><span class="srow-chev">‹</span></a>
+        <button class="srow link danger" data-act="reset"><span class="srow-ico">${LQIcons.svg('redo', 20)}</span><span class="srow-label">${t('set.reset')}</span></button>
+      </div>
+      </div>`, body => {
       $('[data-f=ui]', body).onchange = e => { switchUi(e.target.value); openSettings(); };
       bindPremiumSection(body);
       renderCloudBoxes(body);
@@ -486,6 +528,7 @@
       rate.onchange = () => LQStore.setSetting('slowRate', +rate.value);
       const tl = $('[data-f=translit]', body);
       if (tl) tl.onchange = e => { LQStore.setSetting('translit', e.target.checked); };
+      $('[data-f=sfx]', body).onchange = e => { LQStore.setSetting('sfx', e.target.checked); };
       $('[data-f=minutes]', body).onchange = e => { LQStore.updateProfile({ minutes: +e.target.value }); refreshHeader(); };
       $('[data-act=level]', body).onclick = () => openLevelPicker(L.id);
       $('[data-act=reminders]', body).onclick = openReminders;
@@ -522,38 +565,64 @@
   }
 
   /* ---------- Premium: paywall & license ---------- */
-  const PERIOD = { month: 'pay.perMonth', year: 'pay.perYear', once: 'pay.once' };
 
   function openPaywall() {
     const C = LQCommerce;
+    const deal = C.yearlyDeal();
+    const yes = `<span class="pc yes">${LQIcons.svg('check', 18)}</span>`, no = '<span class="pc no">—</span>';
+    const rows = [
+      ['pay.r.stops', `<b>${C.FREE_STATIONS}</b>`, `<b>${LQData.STATIONS.length}</b>`],
+      ['pay.r.boss', `<b>${C.FREE_STATIONS}</b>`, `<b>${LQData.STATIONS.length}</b>`],
+      ['pay.r.grammar', no, yes],
+      ['pay.r.tutor', no, yes],
+      ['pay.r.sync', yes, yes]
+    ];
+    const plan = id => C.PLANS.find(p => p.id === id);
+    const trial = C.CONFIG.trialDays ? `<small class="trial">${LQIcons.svg('gift', 14)} ${t('pay.trial', { n: C.CONFIG.trialDays })}</small>` : '';
     openModal(`
       <div class="paywall">
-        <h2>${t('pay.title')}</h2>
-        <p class="muted">${t('pay.sub')}</p>
-        <ul class="perks">${['pay.f1', 'pay.f5', 'pay.f2', 'pay.f4', 'pay.f3'].map(k => `<li>✅ ${t(k)}</li>`).join('')}</ul>
-        <div class="plans">
-          ${C.PLANS.map(p => `
-            <div class="plan-card ${p.best ? 'best' : ''}">
-              ${p.best ? `<span class="plan-flag">${t('pay.best')}</span>` : ''}
-              <b>${t('pay.' + p.id)}</b>
-              <div class="plan-price">${esc(C.priceLabel(p))}</div>
-              <small class="muted">${t(PERIOD[p.period])}</small>
-              ${p.period !== 'once' && C.CONFIG.trialDays ? `<small class="trial">🎁 ${t('pay.trial', { n: C.CONFIG.trialDays })}</small>` : ''}
-              <button class="btn ${p.best ? 'primary' : 'ghost'}" data-buy="${p.id}">${p.period !== 'once' && C.CONFIG.trialDays ? t('pay.startTrial') : t('pay.buy')}</button>
-            </div>`).join('')}
+        <div class="pw-hero">
+          <span class="pw-spark">${LQIcons.svg('sparkle', 30)}</span>
+          <h2>${t('pay.hero')}</h2>
+          <p>${t('pay.sub')}</p>
         </div>
-        <p class="muted small">${esc(t('pay.free', { n: C.FREE_STATIONS }))}</p>
+        <table class="pw-compare">
+          <thead><tr><th></th><th>${t('pay.col.free')}</th><th class="prem-col">${t('home.premiumShort')}</th></tr></thead>
+          <tbody>${rows.map(([k, a, b]) => `<tr><td>${t(k)}</td><td>${a}</td><td class="prem-col">${b}</td></tr>`).join('')}</tbody>
+        </table>
+        <div class="pw-plans">
+          <button class="pw-plan best" data-buy="yearly">
+            <span class="plan-flag">${t('pay.save', { n: deal.save })}</span>
+            <span class="pp-name">${t('pay.yearly')}</span>
+            <span class="pp-price">${esc(deal.perMonth)}<small> ${t('pay.perMonthShort')}</small></span>
+            <small class="muted">${t('pay.billedYearly', { p: C.priceLabel(plan('yearly')) })}</small>
+            ${trial}
+          </button>
+          <button class="pw-plan" data-buy="monthly">
+            <span class="pp-name">${t('pay.monthly')}</span>
+            <span class="pp-price">${esc(C.priceLabel(plan('monthly')))}<small> ${t('pay.perMonthShort')}</small></span>
+            ${trial}
+          </button>
+        </div>
+        <button class="btn primary big-cta pw-go" data-buy="yearly">${C.CONFIG.trialDays ? t('pay.startTrial') : t('pay.buy')}</button>
+        <button class="linkish" data-buy="lifetime">${t('pay.lifetimeLink', { p: C.priceLabel(plan('lifetime')) })}</button>
         ${C.demoMode() ? `<p class="note warn small">🧪 ${t('pay.demo')}</p>` : ''}
         <details class="restore"><summary>${t('pay.restore')}</summary>
           <div class="row"><input class="key-input" dir="ltr" placeholder="${t('pay.restorePh')}"><button class="btn sm" data-act="activate">${t('pay.activate')}</button></div>
         </details>
-        <div class="row spread"><span></span><button class="btn ghost" data-act="close">${t('common.close')}</button></div>
+        <button class="icon-btn pw-close" data-act="close" aria-label="${t('common.close')}">${LQIcons.svg('close', 18)}</button>
       </div>`, body => {
-      $$('[data-buy]', body).forEach(b => b.onclick = () => {
-        const r = C.buy(b.dataset.buy);
+      let chosen = 'yearly';
+      const pick = id => { chosen = id; $$('.pw-plan', body).forEach(x => x.classList.toggle('on', x.dataset.buy === id)); };
+      pick('yearly');
+      $$('.pw-plan', body).forEach(b => b.onclick = () => pick(b.dataset.buy));
+      const buy = id => {
+        const r = C.buy(id);
         if (r === 'demo') unlocked();
         else if (r === 'unavailable') toast(t('pay.unavailable'));
-      });
+      };
+      $('.pw-go', body).onclick = () => buy(chosen);
+      $('[data-buy=lifetime].linkish', body).onclick = () => buy('lifetime');
       $('[data-act=activate]', body).onclick = async () => {
         const key = $('.key-input', body).value.trim();
         if (!key) return;
@@ -685,7 +754,7 @@
     if (current === 'map') renderMap();
   });
 
-  window.LQApp = { go, refreshHeader, view, switchUi, openPaywall };
+  window.LQApp = { go, refreshHeader, view, switchUi, openPaywall, openModal, closeModal };
 
   // links from the website's pricing table: ?upgrade=<plan> opens the paywall (after onboarding if needed)
   (function () {

@@ -238,7 +238,7 @@
         <h2>${esc(t('gr.finTitle', { name: local(unit.title) }))}</h2>
         ${LQUI.teacherSays(teacher, esc(t('teach.done')), 52)}
         <div class="stats">
-          <div><b>+${xp}</b><span>XP</span></div>
+          <div><b>+${xp}</b><span>${t('xp.unit')}</span></div>
           <div><b>${firstTry}/${unit.drills.length}</b><span>${t('gr.practice')}</span></div>
           <div><b>${avgVoice}%</b><span>${t('fin.accuracy')}</span></div>
         </div>

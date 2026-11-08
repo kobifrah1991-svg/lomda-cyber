@@ -201,7 +201,7 @@
     return `
       <section class="card league">
         <div class="card-head"><h3>${t('league.title')}</h3><b>${tierName}</b></div>
-        <div class="tiers">${TIERS.map(x => `<span class="${L.xp >= x.xp ? 'on' : ''}" title="${x.xp} XP">${x.icon}</span>`).join('')}</div>
+        <div class="tiers">${TIERS.map(x => `<span class="${L.xp >= x.xp ? 'on' : ''}" title="${x.xp} ${t('xp.unit')}">${x.icon}</span>`).join('')}</div>
         <div class="bar"><i style="width:${pct}%"></i></div>
         <small>${esc(t('league.week', { xp: L.xp }))} · ${esc(L.next ? t('league.next', { n: L.next.xp - L.xp, tier: t('league.t' + L.next.id) }) : t('league.top'))}</small>
         <small class="muted">${esc(t('league.last', { xp: L.last, best: L.best }))}</small>
@@ -272,7 +272,7 @@
     g.font = font(400, 96);
     g.fillText(earned.length ? earned.slice(0, 7).join(' ') : '🌱', W / 2, 860);
     g.font = font(800, 54);
-    g.fillText(`${LQStore.getXp()} XP`, W / 2, 1000);
+    g.fillText(`${LQStore.getXp()} ${t('xp.unit')}`, W / 2, 1000);
     g.font = font(600, 40);
     g.fillText(t('card.cta'), W / 2, 1200);
     return cv;

@@ -138,7 +138,7 @@
     body.innerHTML = `
       <h2>${t('onb.targetQ')}</h2>
       ${LQUI.langGrid(O.target)}
-      ${T ? `<h3 class="sub">${esc(t('onb.levelQ', { lang: f(T, 'name') }))}</h3>`: ''}
+      ${T ? `<h3 class="sub">${esc(t('onb.levelQ', { lang: f(T, 'name') }))}</h3><button class="linkish place-btn" data-act="place">${LQIcons.svg('target', 16)} ${t('place.btn')}</button>`: ''}
       <div class="level-cards">
         ${LEVELS.filter(l => !l.knownOnly).map(l => `
           <button class="level-card ${O.level === l.id ? 'on' : ''}" data-level="${l.id}">
@@ -166,6 +166,8 @@
       stepTarget(body);
       validate();
     });
+    const place = $('[data-act=place]', body);
+    if (place) place.onclick = () => LQExtras.placement(O.target, level => { O.level = level; stepTarget(body); validate(); });
   }
 
   /* ---------- step 3: time & reminders ---------- */
@@ -231,6 +233,7 @@
     container.innerHTML = `
       <h2>${T.flag} ${esc(t('onb.lvlPickTitle', { lang: f(T, 'name') }))}</h2>
       <p class="muted">${t('onb.lvlPickSub')}</p>
+      <button class="linkish place-btn" data-act="place">${LQIcons.svg('target', 16)} ${t('place.btn')}</button>
       <div class="level-cards">
         ${LEVELS.filter(l => !l.knownOnly).map(l => `
           <button class="level-card" data-level="${l.id}">
@@ -239,6 +242,7 @@
           </button>`).join('')}
       </div>`;
     $$('[data-level]', container).forEach(b => b.onclick = () => onPick(+b.dataset.level));
+    $('[data-act=place]', container).onclick = () => LQExtras.placement(lang, onPick);
   }
 
   window.LQOnboarding = { start, levelPicker };

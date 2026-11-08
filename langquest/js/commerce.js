@@ -94,11 +94,17 @@
     return ui === 'he' ? 'ILS' : 'USD';
   }
 
-  function priceLabel(plan) {
-    const cur = currency();
+  function formatPrice(value) {
     const ui = window.LQI18n ? LQI18n.ui() : 'he';
     const locale = { he: 'he-IL', en: 'en-US', ar: 'ar', ru: 'ru-RU' }[ui] || 'en-US';
-    return new Intl.NumberFormat(locale, { style: 'currency', currency: cur, maximumFractionDigits: 2 }).format(plan.price[cur]);
+    return new Intl.NumberFormat(locale, { style: 'currency', currency: currency(), maximumFractionDigits: 2 }).format(value);
+  }
+  function priceLabel(plan) { return formatPrice(plan.price[currency()]); }
+  /** A yearly plan's price per month, and how much it saves against paying monthly (percent). */
+  function yearlyDeal() {
+    const cur = currency();
+    const y = PLANS.find(p => p.period === 'year'), m = PLANS.find(p => p.period === 'month');
+    return { perMonth: formatPrice(Math.floor(100 * y.price[cur] / 12) / 100), save: Math.round(100 * (1 - y.price[cur] / (12 * m.price[cur]))) };
   }
 
   /* ---------- server calls ---------- */
@@ -176,7 +182,7 @@
 
   window.LQCommerce = {
     CONFIG, PLANS, FREE_STATIONS,
-    license, isPremium, stationIsFree, canOpen, priceLabel, demoMode, configured,
+    license, isPremium, stationIsFree, canOpen, priceLabel, formatPrice, yearlyDeal, demoMode, configured,
     handleReturn, restore, revalidate, buy, signOut,
     setAccountEntitlement, accountEntitlement, linkToAccount
   };
