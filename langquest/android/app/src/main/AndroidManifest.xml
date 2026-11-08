@@ -30,6 +30,14 @@
             </intent-filter>
         </activity>
 
+        <!-- home-screen widget: streak, daily goal, next lesson (filled by js/native.js through WidgetPlugin) -->
+        <receiver android:name=".StreakWidget" android:exported="false" android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget_streak_info" />
+        </receiver>
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"

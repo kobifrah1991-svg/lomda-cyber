@@ -310,5 +310,5 @@
     setTimeout(() => URL.revokeObjectURL(a.href), 2000);
   }
 
-  window.LQEngage = { track, todaysQuests, questsCard, leagueCard, renderAwards, level, league, weekKey, freezeNotice, drawCard, BADGES, QUESTS };
+  window.LQEngage = { track, todaysQuests, questsCard, leagueCard, renderAwards, level, league, weekKey, freezeNotice, drawCard, BADGES, QUESTS, TIERS };
 })();

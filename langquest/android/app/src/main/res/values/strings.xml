@@ -4,4 +4,7 @@
     <string name="title_activity_main">TedraLingo</string>
     <string name="package_name">app.scitedra.tedralingo</string>
     <string name="custom_url_scheme">app.scitedra.tedralingo</string>
+    <string name="widget_desc">Your streak, today\'s goal and the next lesson</string>
+    <string name="widget_hint">Open TedraLingo to start your streak</string>
+    <string name="widget_open">Open ›</string>
 </resources>

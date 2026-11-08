@@ -11,9 +11,13 @@
  *    4. "Restore" accepts that license key on another device.
  *    5. Signed in with Google (js/cloud.js), the license is put on the learner's account (POST /link): the server
  *       writes tedralingo_entitlements/{uid} in Firestore and every device signed in to that account is Premium.
- *       Google Play purchases will write the same account entitlement (source 'play').
+ * *
+ *  Google Play (the Android app, once CONFIG.revenuecat.androidKey is set):
+ *    Play Billing through RevenueCat (@revenuecat/purchases-capacitor). The learner signs in first; the purchase is
+ *    made under their Firebase uid (Purchases.logIn), RevenueCat's webhook calls the server (POST /revenuecat) which
+ *    writes tedralingo_entitlements/{uid} with source 'play', and every device on that account is Premium.
+ *    Store prices (local currency) replace the list prices on the paywall. No Stripe link is ever shown in that build.
  *  Until CONFIG is filled in, purchases run in demo mode on localhost only (clearly labelled).
- *  Google Play builds must use Play Billing for in-app digital purchases instead — see README.
  */
 (function () {
   const CONFIG = {
@@ -27,7 +31,10 @@
     apkUrl: '',
     revalidateDays: 3,
     // free trial on subscriptions — set the same number of days on the Stripe prices / Payment Links
-    trialDays: 3
+    trialDays: 3,
+    // Google Play Billing via RevenueCat: the public Android SDK key (goog_…) and the entitlement's identifier.
+    // Offering packages: $rc_monthly, $rc_annual, $rc_lifetime (RevenueCat's default package types).
+    revenuecat: { androidKey: '', entitlement: 'premium' }
   };
 
   const FREE_STATIONS = 3;
@@ -57,6 +64,74 @@
   const configured = () => !!CONFIG.licenseApi && PLANS.every(p => !!CONFIG.checkout[p.id]);
   const demoMode = () => !configured() && isLocal();
 
+  /* ---------- Google Play Billing (RevenueCat) ---------- */
+  const RC_TYPES = { monthly: 'MONTHLY', yearly: 'ANNUAL', lifetime: 'LIFETIME' };
+  const rcPlugin = () => (isNative() && window.Capacitor.Plugins ? window.Capacitor.Plugins.Purchases || null : null);
+  /** The Play build sells through Play Billing only. */
+  const playBilling = () => !!CONFIG.revenuecat.androidKey && !!rcPlugin();
+  let rc = { ready: null, user: null, packages: null };
+  const storePrices = {};
+
+  async function rcReady(uid) {
+    const P = rcPlugin();
+    if (!rc.ready) rc.ready = P.configure({ apiKey: CONFIG.revenuecat.androidKey, appUserID: uid || null });
+    await rc.ready;
+    if (uid && rc.user !== uid) { await P.logIn({ appUserID: uid }); rc.user = uid; }
+    return P;
+  }
+
+  async function rcPackages(uid) {
+    const P = await rcReady(uid);
+    if (rc.packages) return rc.packages;
+    const off = await P.getOfferings();
+    const pk = (off && off.current && off.current.availablePackages) || [];
+    rc.packages = {};
+    Object.entries(RC_TYPES).forEach(([plan, type]) => {
+      const p = pk.find(x => x.packageType === type);
+      if (p) { rc.packages[plan] = p; storePrices[plan] = p.product && p.product.priceString; }
+    });
+    return rc.packages;
+  }
+
+  /** The store's own prices (in the learner's currency) for the paywall; resolves when loaded, never throws. */
+  async function loadStorePrices() {
+    if (!playBilling()) return false;
+    try { await rcPackages(window.LQCloud && LQCloud.user ? LQCloud.user.uid : null); return true; } catch { return false; }
+  }
+
+  /** What RevenueCat says right now, as an account entitlement (the webhook writes the same to Firestore). */
+  function fromCustomerInfo(info, uid) {
+    const e = info && info.entitlements && info.entitlements.active && info.entitlements.active[CONFIG.revenuecat.entitlement];
+    if (!e) return null;
+    const id = String(e.productIdentifier || '');
+    const plan = /life/i.test(id) ? 'lifetime' : /year|annual/i.test(id) ? 'yearly' : 'monthly';
+    const exp = e.expirationDateMillis ? Math.floor(e.expirationDateMillis / 1000) : e.expirationDate ? Math.floor(Date.parse(e.expirationDate) / 1000) : null;
+    setAccountEntitlement(uid, { premium: true, plan, source: 'play', expiresAt: exp });
+    playGrace = { uid, until: Date.now() + 15 * 60 * 1000 };
+    return { plan, exp };
+  }
+
+  async function buyOnPlay(planId) {
+    const uid = window.LQCloud && LQCloud.user ? LQCloud.user.uid : null;
+    if (!uid) return 'signin';
+    const pk = (await rcPackages(uid))[planId];
+    if (!pk) return 'unavailable';
+    try {
+      const r = await rcPlugin().purchasePackage({ aPackage: pk });
+      return fromCustomerInfo(r && r.customerInfo, uid) ? 'play' : 'pending';
+    } catch (e) {
+      return e && (e.userCancelled || /cancel/i.test(e.code || e.message || '')) ? 'cancelled' : 'error';
+    }
+  }
+
+  async function restorePlay() {
+    const uid = window.LQCloud && LQCloud.user ? LQCloud.user.uid : null;
+    if (!uid) return 'signin';
+    const P = await rcReady(uid);
+    const r = await P.restorePurchases();
+    return fromCustomerInfo(r && r.customerInfo, uid) ? 'play' : 'none';
+  }
+
   function license() {
     const lic = load();
     if (!lic) return null;
@@ -69,7 +144,10 @@
   let account = (() => { try { return JSON.parse(localStorage.getItem(ACC_KEY)) || null; } catch { return null; } })();
 
   /** Called by cloud.js with the signed-in uid and the entitlement document ({ premium, plan, source, expiresAt sec|null }), or nulls on sign-out. */
+  // right after a Play purchase the webhook may not have reached Firestore yet: don't let an empty snapshot undo it
+  let playGrace = { uid: null, until: 0 };
   function setAccountEntitlement(uid, e) {
+    if (!(e && e.premium) && uid && uid === playGrace.uid && Date.now() < playGrace.until) return;
     const next = uid && e && e.premium ? { uid, plan: e.plan || '', source: e.source || '', expiresAt: e.expiresAt || null } : null;
     if (JSON.stringify(next) === JSON.stringify(account)) return;
     account = next;
@@ -99,7 +177,7 @@
     const locale = { he: 'he-IL', en: 'en-US', ar: 'ar', ru: 'ru-RU' }[ui] || 'en-US';
     return new Intl.NumberFormat(locale, { style: 'currency', currency: currency(), maximumFractionDigits: 2 }).format(value);
   }
-  function priceLabel(plan) { return formatPrice(plan.price[currency()]); }
+  function priceLabel(plan) { return (playBilling() && storePrices[plan.id]) || formatPrice(plan.price[currency()]); }
   /** A yearly plan's price per month, and how much it saves against paying monthly (percent). */
   function yearlyDeal() {
     const cur = currency();
@@ -161,8 +239,10 @@
     catch (e) { if (e.message === 'inactive' || e.message === 'invalid_token') save(null); }   // offline → keep
   }
 
-  /** Start a purchase. Returns 'redirect' | 'demo' | 'unavailable'. */
+  /** Start a purchase. Returns 'redirect' | 'demo' | 'unavailable', or on Google Play a promise of
+   *  'play' | 'pending' | 'signin' | 'cancelled' | 'error' | 'unavailable'. */
   function buy(planId) {
+    if (playBilling()) return buyOnPlay(planId).catch(() => 'error');
     if (demoMode()) {
       const plan = PLANS.find(p => p.id === planId);
       const exp = plan.period === 'once' ? null : Math.floor(Date.now() / 1000) + (plan.period === 'year' ? 365 : 31) * 86400;
@@ -183,7 +263,7 @@
   window.LQCommerce = {
     CONFIG, PLANS, FREE_STATIONS,
     license, isPremium, stationIsFree, canOpen, priceLabel, formatPrice, yearlyDeal, demoMode, configured,
-    handleReturn, restore, revalidate, buy, signOut,
+    handleReturn, restore, revalidate, buy, signOut, playBilling, loadStorePrices, restorePlay,
     setAccountEntitlement, accountEntitlement, linkToAccount
   };
 })();

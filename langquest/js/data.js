@@ -1540,7 +1540,241 @@ const LANGS = {
       }
     }
   },
-  de: { id: 'de', name: 'גרמנית', name_en: 'German', name_ar: 'الألمانية', name_ru: 'Немецкий', native: 'Deutsch', flag: '🇩🇪', status: 'soon', accents: [{ code: 'de-DE', label: 'גרמניה', label_en: 'Germany', label_ar: 'ألمانيا', label_ru: 'Германия', flag: '🇩🇪' }], stations: {} }
+  de: {
+    id: 'de',
+    name: 'גרמנית',
+    name_en: 'German',
+    name_ar: 'الألمانية',
+    name_ru: 'Немецкий',
+    native: 'Deutsch',
+    flag: '🇩🇪',
+    status: 'ready',
+    accents: [
+      { code: 'de-DE', label: 'גרמניה', label_en: 'Germany', label_ar: 'ألمانيا', label_ru: 'Германия', flag: '🇩🇪' }
+    ],
+    stations: {
+      airport: {
+        phrases: [
+          P("Hier ist mein Reisepass.", "הנה הדרכון שלי.", "🛂", [
+            "Hier|כאן / הנה|hier|הִיר|0", "ist|הוא / נמצא|ist|אִיסְט|0", "mein|שלי|mein|מַיין|0", "Reisepass.|דרכון|Rei·se·pass|רַאי·זֶה·פָּס|0"
+          ]),
+          P("Ich habe einen Anschlussflug.", "יש לי טיסת המשך.", "🔁", [
+            "Ich|אני|ich|אִיחְ|0", "habe|יש לי|ha·be|הָא·בֶּה|0", "einen|(אחד)|ei·nen|אַיי·נֶן|0", "Anschlussflug.|טיסת המשך|An·schluss·flug|אָן·שְׁלוּס·פְלוּג|0"
+          ]),
+          P("Wo ist das Gate?", "איפה השער?", "🚪", [
+            "Wo|איפה|wo|ווֹ|0", "ist|הוא / נמצא|ist|אִיסְט|0", "das|ה־ / זה|das|דָאס|0", "Gate?|שער|Gate|גֵייט|0"
+          ])
+        ],
+        boss: {
+          title: 'פקיד הגבולות', title_en: 'Border officer', title_ar: 'ضابط الحدود', title_ru: 'Пограничник',
+          intro: ["Guten Morgen! Ihren Pass, bitte.", "בוקר טוב! הדרכון שלך, בבקשה."],
+          turns: [
+            { expect: 0, reply: ["Danke. Was ist Ihr Endziel?", "תודה. מה היעד הסופי שלך?"] },
+            { expect: 1, reply: ["Gut. Haben Sie noch Fragen?", "טוב. יש לך עוד שאלות?"] },
+            { expect: 2, reply: ["Gate zwölf, links. Gute Reise!", "שער 12, משמאל. נסיעה טובה!"] }
+          ]
+        }
+      },
+      taxi: {
+        phrases: [
+          P("Können Sie mich zu dieser Adresse bringen?", "אפשר לקחת אותי לכתובת הזאת?", "🚕", [
+            "Können|יכולים (בנימוס)|kön·nen|קֶנ·נֶן|0", "Sie|אתם / אתה (בנימוס)|Sie|זִי|0", "mich|אותי|mich|מִיחְ|0", "zu|אל|zu|צוּ|0", "dieser|הזאת|die·ser|דִי·זֶר|0", "Adresse|כתובת|Ad·res·se|אָד·רֶס·סֶה|1", "bringen?|להביא / לקחת|brin·gen|בְּרִינ·גֶן|0"
+          ]),
+          P("Wie lange dauert das?", "כמה זמן זה לוקח?", "⏱️", [
+            "Wie|איך / כמה|wie|וִוי|0", "lange|זמן רב (כמה זמן)|lan·ge|לָאנ·גֶה|0", "dauert|נמשך|dau·ert|דָאוּ·אֶרְט|0", "das?|ה־ / זה|das|דָאס|0"
+          ]),
+          P("Halten Sie hier, bitte.", "עצור כאן, בבקשה.", "🛑", [
+            "Halten|לעצור|hal·ten|הָאל·טֶן|0", "Sie|אתם / אתה (בנימוס)|Sie|זִי|0", "hier,|כאן / הנה|hier|הִיר|0", "bitte.|בבקשה|bit·te|בִּי·טֶה|0"
+          ])
+        ],
+        boss: {
+          title: 'נהג המונית', title_en: 'Taxi driver', title_ar: 'سائق التاكسي', title_ru: 'Таксист',
+          intro: ["Hallo! Wohin geht's?", "שלום! לאן נוסעים?"],
+          turns: [
+            { expect: 0, reply: ["Klar. Bitte anschnallen.", "בטח. תחגור חגורה, בבקשה."] },
+            { expect: 1, reply: ["Etwa zwanzig Minuten bei diesem Verkehr.", "בערך עשרים דקות בתנועה הזאת."] },
+            { expect: 2, reply: ["Wir sind da. Das macht fünfzehn Euro.", "הגענו. זה חמישה־עשר יורו."] }
+          ]
+        }
+      },
+      hotel: {
+        phrases: [
+          P("Ich habe eine Reservierung.", "יש לי הזמנה.", "📋", [
+            "Ich|אני|ich|אִיחְ|0", "habe|יש לי|ha·be|הָא·בֶּה|0", "eine|(אחת)|ei·ne|אַיי·נֶה|0", "Reservierung.|הזמנה|Re·ser·vie·rung|רֶה·זֶר·וִוי·רוּנְג|2"
+          ]),
+          P("Wann gibt es Frühstück?", "מתי ארוחת הבוקר?", "🥐", [
+            "Wann|מתי|wann|וָואן|0", "gibt|יש (נותן)|gibt|גִיבְּט|0", "es|זה|es|אֶס|0", "Frühstück?|ארוחת בוקר|Früh·stück|פְרִי·שְׁטִיק|0"
+          ]),
+          P("Kann ich noch ein Handtuch haben?", "אפשר לקבל עוד מגבת?", "🧺", [
+            "Kann|יכול|kann|קָאן|0", "ich|אני|ich|אִיחְ|0", "noch|עוד|noch|נוֹחְ|0", "ein|(אחד)|ein|אַיין|0", "Handtuch|מגבת|Hand·tuch|הָאנְט·טוּחְ|0", "haben?|לקבל / יש|ha·ben|הָא·בֶּן|0"
+          ])
+        ],
+        boss: {
+          title: 'פקידת הקבלה', title_en: 'Receptionist', title_ar: 'موظفة الاستقبال', title_ru: 'Администратор',
+          intro: ["Willkommen! Wie kann ich Ihnen helfen?", "ברוך הבא! איך אפשר לעזור?"],
+          turns: [
+            { expect: 0, reply: ["Perfekt, hier ist Ihr Schlüssel. Noch etwas?", "מצוין, הנה המפתח שלך. עוד משהו?"] },
+            { expect: 1, reply: ["Von sieben bis zehn. Noch etwas?", "משבע עד עשר. עוד משהו?"] },
+            { expect: 2, reply: ["Natürlich, ich bringe es aufs Zimmer. Schönen Aufenthalt!", "כמובן, אביא לך לחדר. שהייה נעימה!"] }
+          ]
+        }
+      },
+      cafe: {
+        phrases: [
+          P("Einen Cappuccino, bitte.", "קפוצ׳ינו, בבקשה.", "☕", [
+            "Einen|(אחד)|ei·nen|אַיי·נֶן|0", "Cappuccino,|קפוצ׳ינו|Cap·puc·ci·no|קָא·פּוּ·צִ׳י·נוֹ|2", "bitte.|בבקשה|bit·te|בִּי·טֶה|0"
+          ]),
+          P("Gibt es hier WLAN?", "יש כאן Wi-Fi?", "📶", [
+            "Gibt|יש (נותן)|gibt|גִיבְּט|0", "es|זה|es|אֶס|0", "hier|כאן / הנה|hier|הִיר|0", "WLAN?|Wi-Fi (וֶה־לָאן)|W·LAN|וֶה·לָאן|1"
+          ]),
+          P("Zum Mitnehmen, bitte.", "לקחת, בבקשה.", "🥡", [
+            "Zum|ל־ (אל ה־)|zum|צוּם|0", "Mitnehmen,|לקחת איתי|mit·neh·men|מִיט·נֵיי·מֶן|0", "bitte.|בבקשה|bit·te|בִּי·טֶה|0"
+          ])
+        ],
+        boss: {
+          title: 'הבריסטה', title_en: 'Barista', title_ar: 'الباريستا', title_ru: 'Бариста',
+          intro: ["Hallo! Was darf's sein?", "שלום! מה להגיש לך?"],
+          turns: [
+            { expect: 0, reply: ["Kommt sofort. Noch etwas?", "מיד. עוד משהו?"] },
+            { expect: 1, reply: ["Ja, das Passwort steht an der Tafel.", "כן, הסיסמה כתובה על הלוח."] },
+            { expect: 2, reply: ["Klar! Bitte schön. Schönen Tag noch!", "בטח! בבקשה. יום טוב!"] }
+          ]
+        }
+      },
+      restaurant: {
+        phrases: [
+          P("Einen Tisch für zwei, bitte.", "שולחן לשניים, בבקשה.", "🍽️", [
+            "Einen|(אחד)|ei·nen|אַיי·נֶן|0", "Tisch|שולחן|Tisch|טִישׁ|0", "für|עבור / ל־|für|פִיר|0", "zwei,|שניים|zwei|צְוַויי|0", "bitte.|בבקשה|bit·te|בִּי·טֶה|0"
+          ]),
+          P("Kann ich die Speisekarte sehen?", "אפשר לראות את התפריט?", "📜", [
+            "Kann|יכול|kann|קָאן|0", "ich|אני|ich|אִיחְ|0", "die|ה־|die|דִי|0", "Speisekarte|תפריט|Spei·se·kar·te|שְׁפַּאי·זֶה·קָאר·טֶה|0", "sehen?|לראות|se·hen|זֵיי·הֶן|0"
+          ]),
+          P("Die Rechnung, bitte.", "החשבון, בבקשה.", "🧾", [
+            "Die|ה־|die|דִי|0", "Rechnung,|חשבון|Rech·nung|רֶחְ·נוּנְג|0", "bitte.|בבקשה|bit·te|בִּי·טֶה|0"
+          ])
+        ],
+        boss: {
+          title: 'המלצר', title_en: 'Waiter', title_ar: 'النادل', title_ru: 'Официант',
+          intro: ["Guten Abend! Wie viele Personen?", "ערב טוב! כמה אנשים?"],
+          turns: [
+            { expect: 0, reply: ["Hier entlang, bitte. Möchten Sie bestellen?", "מכאן, בבקשה. תרצו להזמין?"] },
+            { expect: 1, reply: ["Bitte schön. Hat alles geschmeckt?", "בבקשה. היה טעים?"] },
+            { expect: 2, reply: ["Hier ist die Rechnung. Schönen Abend!", "הנה החשבון. ערב טוב!"] }
+          ]
+        }
+      },
+      directions: {
+        phrases: [
+          P("Entschuldigung, ich habe mich verlaufen.", "סליחה, הלכתי לאיבוד.", "🗺️", [
+            "Entschuldigung,|סליחה|Ent·schul·di·gung|אֶנְט·שׁוּל·דִי·גוּנְג|1", "ich|אני|ich|אִיחְ|0", "habe|יש לי|ha·be|הָא·בֶּה|0", "mich|אותי|mich|מִיחְ|0", "verlaufen.|הלכתי לאיבוד|ver·lau·fen|פֶר·לָאוּ·פֶן|1"
+          ]),
+          P("Wie komme ich zum Bahnhof?", "איך מגיעים לתחנת הרכבת?", "🚉", [
+            "Wie|איך / כמה|wie|וִוי|0", "komme|מגיע / בא|kom·me|קוֹ·מֶה|0", "ich|אני|ich|אִיחְ|0", "zum|ל־ (אל ה־)|zum|צוּם|0", "Bahnhof?|תחנת רכבת|Bahn·hof|בָּאן·הוֹף|0"
+          ]),
+          P("Ist das weit von hier?", "זה רחוק מכאן?", "📍", [
+            "Ist|הוא / נמצא|ist|אִיסְט|0", "das|ה־ / זה|das|דָאס|0", "weit|רחוק|weit|וַויט|0", "von|מ־|von|פוֹן|0", "hier?|כאן / הנה|hier|הִיר|0"
+          ])
+        ],
+        boss: {
+          title: 'מקומית שעוזרת', title_en: 'Friendly local', title_ar: 'امرأة من السكان المحليين', title_ru: 'Местная жительница',
+          intro: ["Hallo! Sie sehen etwas verloren aus.", "שלום! נראה שאתה קצת אבוד."],
+          turns: [
+            { expect: 0, reply: ["Kein Problem, ich helfe Ihnen. Wohin möchten Sie?", "אין בעיה, אני אעזור. לאן אתה רוצה ללכת?"] },
+            { expect: 1, reply: ["Gehen Sie geradeaus und an der Bank links.", "לך ישר ופנה שמאלה ליד הבנק."] },
+            { expect: 2, reply: ["Nein, es sind fünf Minuten zu Fuß.", "לא, זה חמש דקות ברגל."] }
+          ]
+        }
+      },
+      sights: {
+        phrases: [
+          P("Zwei Karten, bitte.", "שני כרטיסים, בבקשה.", "🎟️", [
+            "Zwei|שניים|zwei|צְוַויי|0", "Karten,|כרטיסים|Kar·ten|קָאר·טֶן|0", "bitte.|בבקשה|bit·te|בִּי·טֶה|0"
+          ]),
+          P("Wann schließt es?", "מתי זה נסגר?", "🕔", [
+            "Wann|מתי|wann|וָואן|0", "schließt|נסגר|schließt|שְׁלִיסְט|0", "es?|זה|es|אֶס|0"
+          ]),
+          P("Darf ich ein Foto machen?", "מותר לצלם?", "📸", [
+            "Darf|מותר לי|darf|דָארְף|0", "ich|אני|ich|אִיחְ|0", "ein|(אחד)|ein|אַיין|0", "Foto|תמונה|Fo·to|פוֹ·טוֹ|0", "machen?|לעשות|ma·chen|מָא·חֶן|0"
+          ])
+        ],
+        boss: {
+          title: 'הקופאי במוזיאון', title_en: 'Ticket clerk', title_ar: 'موظف التذاكر', title_ru: 'Кассир музея',
+          intro: ["Willkommen im Museum!", "ברוכים הבאים למוזיאון!"],
+          turns: [
+            { expect: 0, reply: ["Das macht dreißig Euro. Bitte schön.", "זה שלושים יורו. בבקשה."] },
+            { expect: 1, reply: ["Heute schließen wir um sechs.", "היום אנחנו סוגרים בשש."] },
+            { expect: 2, reply: ["Ja, aber ohne Blitz, bitte.", "כן, אבל בלי פלאש, בבקשה."] }
+          ]
+        }
+      },
+      shopping: {
+        phrases: [
+          P("Haben Sie das in Größe M?", "יש לכם את זה במידה M?", "👕", [
+            "Haben|לקבל / יש|ha·ben|הָא·בֶּן|0", "Sie|אתם / אתה (בנימוס)|Sie|זִי|0", "das|ה־ / זה|das|דָאס|0", "in|ב־|in|אִין|0", "Größe|מידה|Grö·ße|גְרֶה·סֶה|0", "M?|M (בינונית)|M|אֶם|0"
+          ]),
+          P("Wie viel kostet das?", "כמה זה עולה?", "💰", [
+            "Wie|איך / כמה|wie|וִוי|0", "viel|הרבה (כמה)|viel|פִיל|0", "kostet|עולה|kos·tet|קוֹס·טֶט|0", "das?|ה־ / זה|das|דָאס|0"
+          ]),
+          P("Kann ich mit Karte zahlen?", "אפשר לשלם בכרטיס?", "💳", [
+            "Kann|יכול|kann|קָאן|0", "ich|אני|ich|אִיחְ|0", "mit|עם / ב־|mit|מִיט|0", "Karte|כרטיס|Kar·te|קָאר·טֶה|0", "zahlen?|לשלם|zah·len|צָא·לֶן|0"
+          ])
+        ],
+        boss: {
+          title: 'המוכרת', title_en: 'Shop assistant', title_ar: 'البائعة', title_ru: 'Продавец',
+          intro: ["Hallo! Suchen Sie etwas?", "שלום! מחפשים משהו?"],
+          turns: [
+            { expect: 0, reply: ["Ja, hier bitte.", "כן, הנה."] },
+            { expect: 1, reply: ["Zwanzig Euro.", "עשרים יורו."] },
+            { expect: 2, reply: ["Gern! Hier ist Ihre Tüte. Danke!", "בשמחה! הנה השקית שלך. תודה!"] }
+          ]
+        }
+      },
+      smalltalk: {
+        phrases: [
+          P("Freut mich, dich kennenzulernen!", "נעים מאוד להכיר!", "🤝", [
+            "Freut|משמח|freut|פְרוֹיְט|0", "mich,|אותי|mich|מִיחְ|0", "dich|אותך|dich|דִיחְ|0", "kennenzulernen!|להכיר|ken·nen·zu·ler·nen|קֶ·נֶן·צוּ·לֶר·נֶן|0"
+          ]),
+          P("Woher kommst du?", "מאיפה אתה?", "🌍", [
+            "Woher|מאיפה|wo·her|ווֹ·הֵר|1", "kommst|אתה בא|kommst|קוֹמְסְט|0", "du?|אתה|du|דוּ|0"
+          ]),
+          P("Bis später!", "נתראה אחר כך!", "👋", [
+            "Bis|עד|bis|בִּיס|0", "später!|מאוחר יותר|spä·ter|שְׁפֵּיי·טֶר|0"
+          ])
+        ],
+        boss: {
+          title: 'חברה חדשה', title_en: 'New friend', title_ar: 'صديقة جديدة', title_ru: 'Новая знакомая',
+          intro: ["Hallo! Ich bin Lena. Willkommen auf der Party!", "היי! אני לנה. ברוך הבא למסיבה!"],
+          turns: [
+            { expect: 0, reply: ["Freut mich auch!", "גם לי נעים!"] },
+            { expect: 1, reply: ["Ich komme aus Hamburg. Oh, meine Freunde rufen mich!", "אני מהמבורג. אוי, החברים שלי קוראים לי!"] },
+            { expect: 2, reply: ["Tschüss! Viel Spaß auf der Party!", "ביי! תהנה במסיבה!"] }
+          ]
+        }
+      },
+      emergency: {
+        phrases: [
+          P("Ich brauche einen Arzt.", "אני צריך רופא.", "🩺", [
+            "Ich|אני|ich|אִיחְ|0", "brauche|צריך|brau·che|בְּרָאוּ·חֶה|0", "einen|(אחד)|ei·nen|אַיי·נֶן|0", "Arzt.|רופא|Arzt|אָרְצְט|0"
+          ]),
+          P("Rufen Sie einen Krankenwagen!", "תזמינו אמבולנס!", "🚑", [
+            "Rufen|להזמין / לקרוא|ru·fen|רוּ·פֶן|0", "Sie|אתם / אתה (בנימוס)|Sie|זִי|0", "einen|(אחד)|ei·nen|אַיי·נֶן|0", "Krankenwagen!|אמבולנס|Kran·ken·wa·gen|קְרָאנ·קֶן·וָא·גֶן|0"
+          ]),
+          P("Wo ist die nächste Apotheke?", "איפה בית המרקחת הקרוב?", "💊", [
+            "Wo|איפה|wo|ווֹ|0", "ist|הוא / נמצא|ist|אִיסְט|0", "die|ה־|die|דִי|0", "nächste|הכי קרובה|näch·ste|נֶחְ·סְטֶה|0", "Apotheke?|בית מרקחת|A·po·the·ke|אָ·פּוֹ·טֵיי·קֶה|2"
+          ])
+        ],
+        boss: {
+          title: 'הפרמדיקית', title_en: 'Paramedic', title_ar: 'المسعفة', title_ru: 'Фельдшер',
+          intro: ["Hallo, was ist passiert?", "שלום, מה קרה?"],
+          turns: [
+            { expect: 0, reply: ["Ist es schlimm? Können Sie atmen?", "זה חמור? אתה יכול לנשום?"] },
+            { expect: 1, reply: ["Der Krankenwagen kommt. Noch etwas?", "האמבולנס בדרך. עוד משהו?"] },
+            { expect: 2, reply: ["Zwei Straßen weiter, rechts. Gute Besserung!", "שני רחובות מכאן, מימין. רפואה שלמה!"] }
+          ]
+        }
+      }
+    }
+  }
 };
 
 /* ---------- proficiency levels & learning paces ---------- */
@@ -3929,6 +4163,727 @@ Object.values(LANGS.ar.stations).forEach(st => st.phrases.forEach(p => p.words.f
   }
 })));
 
+/* ---------- German: translations (most reuse the matching Italian line), glosses, transliteration ---------- */
+const DE_EQUIV = {
+  "Hier ist mein Reisepass.": "Ecco il mio passaporto.",
+  "Ich habe einen Anschlussflug.": "Ho un volo in coincidenza.",
+  "Wo ist das Gate?": "Dov'è il gate?",
+  "Guten Morgen! Ihren Pass, bitte.": "Buongiorno! Passaporto, per favore.",
+  "Danke. Was ist Ihr Endziel?": "Grazie. Qual è la sua destinazione finale?",
+  "Gut. Haben Sie noch Fragen?": "Va bene. Ha qualche domanda?",
+  "Gate zwölf, links. Gute Reise!": "Gate dodici, sulla sinistra. Buon viaggio!",
+  "Können Sie mich zu dieser Adresse bringen?": "Mi può portare a questo indirizzo?",
+  "Wie lange dauert das?": "Quanto tempo ci vuole?",
+  "Halten Sie hier, bitte.": "Si fermi qui, per favore.",
+  "Hallo! Wohin geht's?": "Buongiorno! Dove andiamo?",
+  "Klar. Bitte anschnallen.": "Certo. Allacci la cintura.",
+  "Etwa zwanzig Minuten bei diesem Verkehr.": "Circa venti minuti con questo traffico.",
+  "Wir sind da. Das macht fünfzehn Euro.": "Eccoci. Sono quindici euro.",
+  "Ich habe eine Reservierung.": "Ho una prenotazione.",
+  "Wann gibt es Frühstück?": "A che ora è la colazione?",
+  "Kann ich noch ein Handtuch haben?": "Posso avere un altro asciugamano?",
+  "Willkommen! Wie kann ich Ihnen helfen?": "Benvenuto! Come posso aiutarla?",
+  "Perfekt, hier ist Ihr Schlüssel. Noch etwas?": "Perfetto, ecco la sua chiave. Altro?",
+  "Von sieben bis zehn. Noch etwas?": "Dalle sette alle dieci. Altro?",
+  "Natürlich, ich bringe es aufs Zimmer. Schönen Aufenthalt!": "Certo, gliela porto in camera. Buon soggiorno!",
+  "Einen Cappuccino, bitte.": "Un cappuccino, per favore.",
+  "Gibt es hier WLAN?": "C'è il wifi?",
+  "Zum Mitnehmen, bitte.": "È da portare via.",
+  "Hallo! Was darf's sein?": "Ciao! Cosa le preparo?",
+  "Kommt sofort. Noch etwas?": "Subito. Altro?",
+  "Ja, das Passwort steht an der Tafel.": "Sì, la password è sulla lavagna.",
+  "Klar! Bitte schön. Schönen Tag noch!": "Certo! Ecco a lei. Buona giornata!",
+  "Einen Tisch für zwei, bitte.": "Un tavolo per due, per favore.",
+  "Kann ich die Speisekarte sehen?": "Posso vedere il menù?",
+  "Die Rechnung, bitte.": "Il conto, per favore.",
+  "Guten Abend! Wie viele Personen?": "Buonasera! Quante persone?",
+  "Hier entlang, bitte. Möchten Sie bestellen?": "Prego, da questa parte. Volete ordinare?",
+  "Bitte schön. Hat alles geschmeckt?": "Ecco a lei. Com'era tutto?",
+  "Hier ist die Rechnung. Schönen Abend!": "Ecco il conto. Buona serata!",
+  "Entschuldigung, ich habe mich verlaufen.": "Scusi, mi sono perso.",
+  "Wie komme ich zum Bahnhof?": "Come arrivo alla stazione?",
+  "Ist das weit von hier?": "È lontano da qui?",
+  "Hallo! Sie sehen etwas verloren aus.": "Ciao! Sembra un po' perso.",
+  "Kein Problem, ich helfe Ihnen. Wohin möchten Sie?": "Tranquillo, la aiuto io. Dove vuole andare?",
+  "Gehen Sie geradeaus und an der Bank links.": "Vada dritto e giri a sinistra alla banca.",
+  "Nein, es sind fünf Minuten zu Fuß.": "No, sono cinque minuti a piedi.",
+  "Zwei Karten, bitte.": "Due biglietti, per favore.",
+  "Wann schließt es?": "A che ora chiude?",
+  "Darf ich ein Foto machen?": "Posso fare una foto?",
+  "Willkommen im Museum!": "Benvenuti al museo!",
+  "Das macht dreißig Euro. Bitte schön.": "Sono trenta euro. Ecco a voi.",
+  "Heute schließen wir um sechs.": "Oggi chiudiamo alle sei.",
+  "Ja, aber ohne Blitz, bitte.": "Sì, ma senza flash, per favore.",
+  "Haben Sie das in Größe M?": "Ce l'ha in taglia media?",
+  "Wie viel kostet das?": "Quanto costa questo?",
+  "Kann ich mit Karte zahlen?": "Posso pagare con la carta?",
+  "Hallo! Suchen Sie etwas?": "Ciao! Cerca qualcosa?",
+  "Ja, hier bitte.": "Sì, eccola.",
+  "Zwanzig Euro.": "Venti euro.",
+  "Gern! Hier ist Ihre Tüte. Danke!": "Certo! Ecco la sua borsa. Grazie!",
+  "Freut mich, dich kennenzulernen!": "Piacere di conoscerti!",
+  "Woher kommst du?": "Di dove sei?",
+  "Bis später!": "A dopo!",
+  "Freut mich auch!": "Piacere mio!",
+  "Tschüss! Viel Spaß auf der Party!": "Ciao! Divertiti alla festa!",
+  "Ich brauche einen Arzt.": "Ho bisogno di un medico.",
+  "Rufen Sie einen Krankenwagen!": "Chiami un'ambulanza!",
+  "Wo ist die nächste Apotheke?": "Dov'è la farmacia più vicina?",
+  "Hallo, was ist passiert?": "Salve, cosa succede?",
+  "Ist es schlimm? Können Sie atmen?": "È grave? Riesce a respirare?",
+  "Der Krankenwagen kommt. Noch etwas?": "Stanno arrivando. Altro?",
+  "Zwei Straßen weiter, rechts. Gute Besserung!": "A due isolati, sulla destra. Si riguardi!"
+};
+const DE_CUSTOM = {
+  "en": {
+    "Hallo! Ich bin Lena. Willkommen auf der Party!": "Hi! I'm Lena. Welcome to the party!",
+    "Ich komme aus Hamburg. Oh, meine Freunde rufen mich!": "I'm from Hamburg. Oh, my friends are calling me!"
+  },
+  "ar": {
+    "Hallo! Ich bin Lena. Willkommen auf der Party!": "مرحبًا! أنا لينا. أهلًا بك في الحفلة!",
+    "Ich komme aus Hamburg. Oh, meine Freunde rufen mich!": "أنا من هامبورغ. أوه، أصدقائي ينادونني!"
+  },
+  "ru": {
+    "Hallo! Ich bin Lena. Willkommen auf der Party!": "Привет! Я Лена. Добро пожаловать на вечеринку!",
+    "Ich komme aus Hamburg. Oh, meine Freunde rufen mich!": "Я из Гамбурга. Ой, меня зовут друзья!"
+  }
+};
+// word → [en, ar, ru] gloss and [en, ar, ru] respelling
+const DE_WORDS = {
+  "hier": [
+    "here",
+    "هنا",
+    "здесь / вот",
+    "heer",
+    "هير",
+    "хир"
+  ],
+  "ist": [
+    "is",
+    "هو / يكون",
+    "есть / находится",
+    "ist",
+    "إست",
+    "ист"
+  ],
+  "mein": [
+    "my",
+    "ـي (لي)",
+    "мой",
+    "mine",
+    "ماين",
+    "майн"
+  ],
+  "reisepass": [
+    "passport",
+    "جواز سفر",
+    "паспорт",
+    "rye·zuh·pahs",
+    "راي·زه·پاس",
+    "рай·зе·пас"
+  ],
+  "ich": [
+    "I",
+    "أنا",
+    "я",
+    "ikh",
+    "إيخ",
+    "их"
+  ],
+  "habe": [
+    "have",
+    "لديّ",
+    "имею",
+    "hah·buh",
+    "ها·به",
+    "ха·бе"
+  ],
+  "einen": [
+    "a / one",
+    "واحد",
+    "один (вин.)",
+    "eye·nen",
+    "آي·نن",
+    "ай·нен"
+  ],
+  "anschlussflug": [
+    "connecting flight",
+    "رحلة ربط",
+    "стыковочный рейс",
+    "ahn·shloos·floog",
+    "آن·شلوس·فلوغ",
+    "ан·шлюс·флуг"
+  ],
+  "wo": [
+    "where",
+    "أين",
+    "где",
+    "voh",
+    "ڤو",
+    "во"
+  ],
+  "das": [
+    "the / that",
+    "الـ / ذلك",
+    "это / (артикль)",
+    "dahs",
+    "داس",
+    "дас"
+  ],
+  "gate": [
+    "gate",
+    "بوابة",
+    "выход (гейт)",
+    "gayt",
+    "غيت",
+    "гейт"
+  ],
+  "können": [
+    "can",
+    "تستطيعون",
+    "можете",
+    "kuhn·nen",
+    "كون·نن",
+    "кён·нен"
+  ],
+  "sie": [
+    "you (polite)",
+    "حضرتك",
+    "вы",
+    "zee",
+    "زي",
+    "зи"
+  ],
+  "mich": [
+    "me",
+    "إياي",
+    "меня",
+    "mikh",
+    "ميخ",
+    "мих"
+  ],
+  "zu": [
+    "to",
+    "إلى",
+    "к / до",
+    "tsoo",
+    "تسو",
+    "цу"
+  ],
+  "dieser": [
+    "this",
+    "هذه",
+    "этот (этой)",
+    "dee·zer",
+    "دي·زر",
+    "ди·зер"
+  ],
+  "adresse": [
+    "address",
+    "عنوان",
+    "адрес",
+    "ahd·res·suh",
+    "آد·رس·سه",
+    "ад·рес·се"
+  ],
+  "bringen": [
+    "to bring / take",
+    "أن توصلوا",
+    "отвезти",
+    "bring·en",
+    "برين·غن",
+    "брин·ген"
+  ],
+  "wie": [
+    "how",
+    "كيف / كم",
+    "как",
+    "vee",
+    "ڤي",
+    "ви"
+  ],
+  "lange": [
+    "long",
+    "طويلًا",
+    "долго",
+    "lahng·uh",
+    "لانغ·ه",
+    "лан·ге"
+  ],
+  "dauert": [
+    "takes / lasts",
+    "يستغرق",
+    "длится",
+    "dow·ert",
+    "داو·إرت",
+    "дау·эрт"
+  ],
+  "halten": [
+    "stop",
+    "توقّفوا",
+    "остановите(сь)",
+    "hahl·ten",
+    "هال·تن",
+    "халь·тен"
+  ],
+  "bitte": [
+    "please",
+    "من فضلك",
+    "пожалуйста",
+    "bit·tuh",
+    "بي·ته",
+    "бит·те"
+  ],
+  "eine": [
+    "a / one",
+    "واحدة",
+    "одна",
+    "eye·nuh",
+    "آي·نه",
+    "ай·не"
+  ],
+  "reservierung": [
+    "reservation",
+    "حجز",
+    "бронь",
+    "reh·zer·vee·roong",
+    "ري·زر·ڤي·رونغ",
+    "ре·зер·ви·рунг"
+  ],
+  "wann": [
+    "when",
+    "متى",
+    "когда",
+    "vahn",
+    "ڤان",
+    "ван"
+  ],
+  "gibt": [
+    "there is (gives)",
+    "يوجد",
+    "есть (даёт)",
+    "gipt",
+    "غيبت",
+    "гибт"
+  ],
+  "es": [
+    "it",
+    "ذلك",
+    "это",
+    "es",
+    "إس",
+    "эс"
+  ],
+  "frühstück": [
+    "breakfast",
+    "فطور",
+    "завтрак",
+    "froo·shtook",
+    "فرو·شتوك",
+    "фрю·штюк"
+  ],
+  "kann": [
+    "can",
+    "أستطيع",
+    "могу",
+    "kahn",
+    "كان",
+    "кан"
+  ],
+  "noch": [
+    "another / still",
+    "أيضًا / آخر",
+    "ещё",
+    "nokh",
+    "نوخ",
+    "нох"
+  ],
+  "ein": [
+    "a / one",
+    "واحد",
+    "один",
+    "ine",
+    "آين",
+    "айн"
+  ],
+  "handtuch": [
+    "towel",
+    "منشفة",
+    "полотенце",
+    "hahnt·tookh",
+    "هانت·توخ",
+    "хант·тух"
+  ],
+  "haben": [
+    "to have",
+    "أن أحصل",
+    "иметь / получить",
+    "hah·ben",
+    "ها·بن",
+    "ха·бен"
+  ],
+  "cappuccino": [
+    "cappuccino",
+    "كابتشينو",
+    "капучино",
+    "kah·poo·chee·noh",
+    "كا·پو·تشي·نو",
+    "ка·пу·чи·но"
+  ],
+  "wlan": [
+    "Wi-Fi",
+    "واي فاي",
+    "Wi-Fi",
+    "veh·lahn",
+    "ڤيه·لان",
+    "ве·лан"
+  ],
+  "zum": [
+    "to the",
+    "إلى الـ",
+    "для / к",
+    "tsoom",
+    "تسوم",
+    "цум"
+  ],
+  "mitnehmen": [
+    "to take away",
+    "للأخذ معي",
+    "с собой",
+    "mit·nay·men",
+    "ميت·ني·من",
+    "мит·не·мен"
+  ],
+  "tisch": [
+    "table",
+    "طاولة",
+    "стол",
+    "tish",
+    "تيش",
+    "тиш"
+  ],
+  "für": [
+    "for",
+    "لـ",
+    "для / на",
+    "fuer",
+    "فير",
+    "фюр"
+  ],
+  "zwei": [
+    "two",
+    "اثنان",
+    "два",
+    "tsvye",
+    "تسڤاي",
+    "цвай"
+  ],
+  "die": [
+    "the",
+    "الـ",
+    "(артикль)",
+    "dee",
+    "دي",
+    "ди"
+  ],
+  "speisekarte": [
+    "menu",
+    "قائمة الطعام",
+    "меню",
+    "shpye·zuh·kar·tuh",
+    "شپاي·زه·كار·ته",
+    "шпай·зе·кар·те"
+  ],
+  "sehen": [
+    "to see",
+    "أن أرى",
+    "посмотреть",
+    "zay·en",
+    "زي·هن",
+    "зе·ен"
+  ],
+  "rechnung": [
+    "bill",
+    "الحساب",
+    "счёт",
+    "rekh·noong",
+    "ريخ·نونغ",
+    "рех·нунг"
+  ],
+  "entschuldigung": [
+    "excuse me",
+    "عفوًا",
+    "извините",
+    "ent·shool·dee·goong",
+    "إنت·شول·دي·غونغ",
+    "энт·шуль·ди·гунг"
+  ],
+  "verlaufen": [
+    "got lost",
+    "تهت",
+    "заблудился",
+    "fer·low·fen",
+    "فر·لاو·فن",
+    "фер·лау·фен"
+  ],
+  "komme": [
+    "come / get",
+    "أصل",
+    "доберусь",
+    "kom·muh",
+    "كو·مه",
+    "ком·ме"
+  ],
+  "bahnhof": [
+    "train station",
+    "محطة القطار",
+    "вокзал",
+    "bahn·hohf",
+    "بان·هوف",
+    "бан·хоф"
+  ],
+  "weit": [
+    "far",
+    "بعيد",
+    "далеко",
+    "vite",
+    "ڤايت",
+    "вайт"
+  ],
+  "von": [
+    "from",
+    "من",
+    "от / из",
+    "fon",
+    "فون",
+    "фон"
+  ],
+  "karten": [
+    "tickets",
+    "تذاكر",
+    "билеты",
+    "kar·ten",
+    "كار·تن",
+    "кар·тен"
+  ],
+  "schließt": [
+    "closes",
+    "يُغلق",
+    "закрывается",
+    "shleest",
+    "شليست",
+    "шлист"
+  ],
+  "darf": [
+    "may",
+    "هل يُسمح لي",
+    "можно мне",
+    "darf",
+    "دارف",
+    "дарф"
+  ],
+  "foto": [
+    "photo",
+    "صورة",
+    "фото",
+    "foh·toh",
+    "فو·تو",
+    "фо·то"
+  ],
+  "machen": [
+    "to make / take",
+    "أن ألتقط",
+    "сделать",
+    "mah·khen",
+    "ما·خن",
+    "ма·хен"
+  ],
+  "in": [
+    "in",
+    "في",
+    "в",
+    "in",
+    "إن",
+    "ин"
+  ],
+  "größe": [
+    "size",
+    "مقاس",
+    "размер",
+    "gruh·suh",
+    "غرو·سه",
+    "грё·се"
+  ],
+  "m": [
+    "M (medium)",
+    "M (وسط)",
+    "M (средний)",
+    "em",
+    "إم",
+    "эм"
+  ],
+  "viel": [
+    "much",
+    "كم (كثير)",
+    "много (сколько)",
+    "feel",
+    "فيل",
+    "филь"
+  ],
+  "kostet": [
+    "costs",
+    "يكلّف",
+    "стоит",
+    "kos·tet",
+    "كوس·تت",
+    "кос·тет"
+  ],
+  "mit": [
+    "with / by",
+    "بـ",
+    "с / картой",
+    "mit",
+    "ميت",
+    "мит"
+  ],
+  "karte": [
+    "card",
+    "بطاقة",
+    "карта",
+    "kar·tuh",
+    "كار·ته",
+    "кар·те"
+  ],
+  "zahlen": [
+    "to pay",
+    "أن أدفع",
+    "заплатить",
+    "tsah·len",
+    "تسا·لن",
+    "ца·лен"
+  ],
+  "freut": [
+    "pleases",
+    "يسعدني",
+    "радует",
+    "froyt",
+    "فرويت",
+    "фройт"
+  ],
+  "dich": [
+    "you",
+    "ـك",
+    "тебя",
+    "dikh",
+    "ديخ",
+    "дих"
+  ],
+  "kennenzulernen": [
+    "to meet",
+    "التعرّف",
+    "познакомиться",
+    "ken·nen·tsoo·ler·nen",
+    "كن·نن·تسو·لر·نن",
+    "кен·нен·цу·лер·нен"
+  ],
+  "woher": [
+    "where from",
+    "من أين",
+    "откуда",
+    "voh·hair",
+    "ڤو·هير",
+    "во·хер"
+  ],
+  "kommst": [
+    "come (you)",
+    "تأتي",
+    "ты (приходишь)",
+    "komst",
+    "كومست",
+    "комст"
+  ],
+  "du": [
+    "you",
+    "أنت",
+    "ты",
+    "doo",
+    "دو",
+    "ду"
+  ],
+  "bis": [
+    "until",
+    "إلى",
+    "до",
+    "bis",
+    "بيس",
+    "бис"
+  ],
+  "später": [
+    "later",
+    "لاحقًا",
+    "позже",
+    "shpay·ter",
+    "شپي·تر",
+    "шпе·тер"
+  ],
+  "brauche": [
+    "need",
+    "أحتاج",
+    "нужен",
+    "brow·khuh",
+    "براو·خه",
+    "брау·хе"
+  ],
+  "arzt": [
+    "doctor",
+    "طبيب",
+    "врач",
+    "artst",
+    "آرتست",
+    "арцт"
+  ],
+  "rufen": [
+    "call",
+    "اتصلوا",
+    "вызовите",
+    "roo·fen",
+    "رو·فن",
+    "ру·фен"
+  ],
+  "krankenwagen": [
+    "ambulance",
+    "سيارة إسعاف",
+    "скорая помощь",
+    "krahn·ken·vah·gen",
+    "كران·كن·ڤا·غن",
+    "кран·кен·ва·ген"
+  ],
+  "nächste": [
+    "nearest",
+    "الأقرب",
+    "ближайшая",
+    "nekh·stuh",
+    "نيخ·سته",
+    "нех·сте"
+  ],
+  "apotheke": [
+    "pharmacy",
+    "صيدلية",
+    "аптека",
+    "ah·poh·tay·kuh",
+    "آ·پو·تي·كه",
+    "а·по·те·ке"
+  ]
+};
+['en', 'ar', 'ru'].forEach((ui, k) => {
+  const ph = TRANSLATIONS[ui].phrases;
+  Object.entries(DE_EQUIV).forEach(([de, other]) => { if (ph[other]) ph[de] = ph[other]; });
+  Object.assign(ph, DE_CUSTOM[ui]);
+  const gl = TRANSLATIONS[ui].words.de = TRANSLATIONS[ui].words.de || {};
+  const tl = TRANSLIT[ui].de = TRANSLIT[ui].de || {};
+  Object.entries(DE_WORDS).forEach(([w, v]) => { gl[w] = v[k]; tl[w] = v[3 + k]; });
+});
+
 // attach translations: phrase.tr / line.tr = { he, en, … }, word.meaning_<lang>
 Object.values(LANGS).forEach(L => Object.values(L.stations).forEach(st => {
   const attach = (text, he) => {
@@ -4005,6 +4960,12 @@ const TEACHERS = {
       city: { he: 'רומא', en: 'Rome', ar: 'روما', ru: 'Рим' },
       bio: { he: 'מדריכה ברומא שאוהבת ג׳לטו ואנשים', en: 'Rome tour guide who loves gelato and people',
         ar: 'مرشدة سياحية في روما تحب الجيلاتو والناس', ru: 'Гид по Риму, обожает джелато и людей' } }
+  ],
+  de: [
+    { id: 'jonas', name: 'Jonas', accent: 'de-DE', gender: 'm', age: 27, hue: 45,
+      city: { he: 'ברלין', en: 'Berlin', ar: 'برلين', ru: 'Берлин' },
+      bio: { he: 'מתופף ובריסטה מברלין, מסביר בסבלנות ובחיוך', en: 'Drummer and barista from Berlin who explains with patience and a smile',
+        ar: 'عازف طبول وباريستا من برلين يشرح بصبر وابتسامة', ru: 'Барабанщик и бариста из Берлина, объясняет терпеливо и с улыбкой' } }
   ]
 };
 

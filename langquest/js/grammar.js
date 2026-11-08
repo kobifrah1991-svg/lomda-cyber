@@ -362,6 +362,188 @@
       }
     ],
 
+    de: [
+      {
+        id: 'sein-haben', icon: '🧩', level: 'A1',
+        title: { he: 'sein ו-haben — "להיות" ו"שיש לי"', en: 'Sein and haben — "to be" and "to have"', ar: 'sein و haben — «يكون» و«يملك»', ru: 'Sein и haben — «быть» и «иметь»' },
+        explain: {
+          he: ['sein (להיות): ich bin, du bist, er / sie ist, wir sind, ihr seid, sie / Sie sind.', 'haben (שיש לי): ich habe, du hast, er hat, wir haben, ihr habt, sie / Sie haben.', 'בגרמנית חייבים את הפועל: Ich bin müde — "אני (הוא) עייף". אי אפשר לדלג עליו כמו בעברית.'],
+          en: ['sein (to be): ich bin, du bist, er / sie ist, wir sind, ihr seid, sie / Sie sind.', 'haben (to have): ich habe, du hast, er hat, wir haben, ihr habt, sie / Sie haben.', 'Both are irregular — learn them first, they appear in almost every sentence.'],
+          ar: ['sein (يكون): ich bin, du bist, er / sie ist, wir sind, ihr seid, sie / Sie sind.', 'haben (يملك): ich habe, du hast, er hat, wir haben, ihr habt, sie / Sie haben.', 'في الألمانية لا بد من الفعل: Ich bin müde — «أنا (أكون) متعب». لا يمكن حذفه كما في العربية.'],
+          ru: ['sein (быть): ich bin, du bist, er / sie ist, wir sind, ihr seid, sie / Sie sind.', 'haben (иметь): ich habe, du hast, er hat, wir haben, ihr habt, sie / Sie haben.', 'В немецком глагол обязателен: Ich bin müde — «я (есть) устал». Пропустить его, как в русском, нельзя.']
+        },
+        table: [['ich', 'bin · habe'], ['du', 'bist · hast'], ['er / sie / es', 'ist · hat'], ['wir', 'sind · haben'], ['ihr', 'seid · habt'], ['sie / Sie', 'sind · haben']],
+        ex: [
+          ['Ich bin Student.', 'אני סטודנט.', 'I am a student.', 'أنا طالب.', 'Я студент.'],
+          ['Ich habe Hunger.', 'אני רעב.', 'I am hungry.', 'أنا جائع.', 'Я голоден.'],
+          ['Das Museum ist geschlossen.', 'המוזיאון סגור.', 'The museum is closed.', 'المتحف مغلق.', 'Музей закрыт.'],
+          ['Wir haben eine Reservierung.', 'יש לנו הזמנה.', 'We have a reservation.', 'لدينا حجز.', 'У нас есть бронь.']
+        ],
+        drills: [['Ich ___ aus Israel.', 'bin', ['bin', 'bist', 'habe']], ['Du ___ Hunger?', 'hast', ['hast', 'bist', 'hat']], ['Wir ___ im Urlaub.', 'sind', ['sind', 'haben', 'seid']], ['Sie ___ zwei Kinder.', 'haben', ['haben', 'sind', 'hat']]]
+      },
+      {
+        id: 'articles', icon: '📰', level: 'A1',
+        title: { he: 'der, die, das — שלושה מינים', en: 'Der, die, das — three genders', ar: 'der و die و das — ثلاثة أجناس', ru: 'Der, die, das — три рода' },
+        explain: {
+          he: ['לכל שם עצם יש מין: זכר der (der Bahnhof), נקבה die (die Karte), סתמי das (das Hotel).', 'ברבים תמיד die: die Karten, die Hotels.', 'אחד / אחת: ein (ein Tisch, ein Foto), eine (eine Karte). את המין לומדים יחד עם המילה — לא תמיד יש היגיון.'],
+          en: ['Every noun has a gender: masculine der (der Bahnhof), feminine die (die Karte), neuter das (das Hotel).', 'The plural is always die: die Karten, die Hotels.', '"A": ein (ein Tisch, ein Foto), eine (eine Karte). Learn each noun with its article — gender is often not logical.'],
+          ar: ['لكل اسم جنس: مذكر der (der Bahnhof)، مؤنث die (die Karte)، محايد das (das Hotel).', 'الجمع دائمًا die: die Karten, die Hotels.', 'النكرة: ein (ein Tisch, ein Foto)، eine (eine Karte). احفظ كل اسم مع أداته — الجنس ليس منطقيًا دائمًا.'],
+          ru: ['У каждого существительного есть род: мужской der (der Bahnhof), женский die (die Karte), средний das (das Hotel).', 'Во множественном всегда die: die Karten, die Hotels.', 'Неопределённый: ein (ein Tisch, ein Foto), eine (eine Karte). Учите слово сразу с артиклем — род не всегда логичен.']
+        },
+        table: [['der Bahnhof · ein Bahnhof', 'die Bahnhöfe'], ['die Karte · eine Karte', 'die Karten'], ['das Hotel · ein Hotel', 'die Hotels']],
+        ex: [
+          ['Der Zug fährt um acht.', 'הרכבת יוצאת בשמונה.', 'The train leaves at eight.', 'يغادر القطار في الثامنة.', 'Поезд отправляется в восемь.'],
+          ['Die Apotheke ist hier.', 'בית המרקחת כאן.', 'The pharmacy is here.', 'الصيدلية هنا.', 'Аптека здесь.'],
+          ['Das Hotel ist schön.', 'המלון יפה.', 'The hotel is nice.', 'الفندق جميل.', 'Отель красивый.'],
+          ['Die Koffer sind im Zimmer.', 'המזוודות בחדר.', 'The suitcases are in the room.', 'الحقائب في الغرفة.', 'Чемоданы в номере.']
+        ],
+        drills: [['___ Bahnhof ist weit.', 'Der', ['Der', 'Die', 'Das']], ['___ Rechnung, bitte.', 'Die', ['Der', 'Die', 'Das']], ['___ Hotel ist neu.', 'Das', ['Der', 'Die', 'Das']], ['Ich habe ___ Frage.', 'eine', ['ein', 'eine', 'einen']]]
+      },
+      {
+        id: 'present', icon: '🔁', level: 'A1',
+        title: { he: 'הווה: פעלים רגילים (wohnen)', en: 'Present tense: regular verbs (wohnen)', ar: 'المضارع: الأفعال المنتظمة (wohnen)', ru: 'Настоящее время: правильные глаголы (wohnen)' },
+        explain: {
+          he: ['מורידים ‎-en מהמקור (wohnen ← wohn) ומוסיפים סיומת: ‎-e, ‎-st, ‎-t, ‎-en, ‎-t, ‎-en.', 'ich wohne, du wohnst, er wohnt, wir wohnen, ihr wohnt, sie wohnen.', 'אותה צורה גם להווה מתמשך: Ich lerne Deutsch = "אני לומד גרמנית" (עכשיו או בכלל).'],
+          en: ['Drop -en from the infinitive (wohnen → wohn) and add: -e, -st, -t, -en, -t, -en.', 'ich wohne, du wohnst, er wohnt, wir wohnen, ihr wohnt, sie wohnen.', 'German has no "-ing" form: Ich lerne Deutsch = "I learn" and "I am learning" German.'],
+          ar: ['احذف ‎-en من المصدر (wohnen ← wohn) وأضف: ‎-e، ‎-st، ‎-t، ‎-en، ‎-t، ‎-en.', 'ich wohne, du wohnst, er wohnt, wir wohnen, ihr wohnt, sie wohnen.', 'الصيغة نفسها للحاضر المستمر: Ich lerne Deutsch = «أتعلم الألمانية» (الآن أو عمومًا).'],
+          ru: ['Отбросьте -en (wohnen → wohn) и добавьте: -e, -st, -t, -en, -t, -en.', 'ich wohne, du wohnst, er wohnt, wir wohnen, ihr wohnt, sie wohnen.', 'Отдельной продолженной формы нет: Ich lerne Deutsch = «я учу немецкий» (сейчас или вообще).']
+        },
+        table: [['ich', 'wohne'], ['du', 'wohnst'], ['er / sie / es', 'wohnt'], ['wir', 'wohnen'], ['ihr', 'wohnt'], ['sie / Sie', 'wohnen']],
+        ex: [
+          ['Ich wohne in Berlin.', 'אני גר בברלין.', 'I live in Berlin.', 'أسكن في برلين.', 'Я живу в Берлине.'],
+          ['Du sprichst gut Deutsch.', 'אתה מדבר גרמנית טוב.', 'You speak German well.', 'تتكلم الألمانية جيدًا.', 'Ты хорошо говоришь по-немецки.'],
+          ['Wir suchen den Bahnhof.', 'אנחנו מחפשים את תחנת הרכבת.', 'We are looking for the station.', 'نبحث عن محطة القطار.', 'Мы ищем вокзал.'],
+          ['Sie kaufen Karten.', 'הם קונים כרטיסים.', 'They are buying tickets.', 'يشترون تذاكر.', 'Они покупают билеты.']
+        ],
+        drills: [['Ich ___ in Tel Aviv.', 'wohne', ['wohne', 'wohnst', 'wohnt']], ['Du ___ Kaffee.', 'trinkst', ['trinke', 'trinkst', 'trinken']], ['Er ___ Deutsch.', 'lernt', ['lerne', 'lernt', 'lernen']], ['Wir ___ ein Taxi.', 'nehmen', ['nehme', 'nimmt', 'nehmen']]]
+      },
+      {
+        id: 'negation', icon: '🚫', level: 'A1',
+        title: { he: 'שלילה: nicht ו-kein', en: 'Negation: nicht and kein', ar: 'النفي: nicht و kein', ru: 'Отрицание: nicht и kein' },
+        explain: {
+          he: ['nicht שולל פועל או תואר: Ich verstehe nicht (אני לא מבין). Das ist nicht weit (זה לא רחוק).', 'kein שולל שם עצם בלי "ה־": Ich habe keine Zeit (אין לי זמן). Ich habe kein Auto.', 'הכלל: אם בחיוב היה ein / eine או בלי מילית — בשלילה kein / keine.'],
+          en: ['nicht negates verbs and adjectives: Ich verstehe nicht (I don\'t understand). Das ist nicht weit.', 'kein negates a noun with no "the": Ich habe keine Zeit (I have no time). Ich habe kein Auto.', 'Rule of thumb: if the positive has ein / eine or no article — use kein / keine.'],
+          ar: ['nicht ينفي الفعل والصفة: Ich verstehe nicht (لا أفهم). Das ist nicht weit (ليس بعيدًا).', 'kein ينفي الاسم النكرة: Ich habe keine Zeit (ليس لدي وقت). Ich habe kein Auto.', 'القاعدة: إذا كان في الإثبات ein / eine أو بلا أداة — نستعمل kein / keine.'],
+          ru: ['nicht отрицает глагол или прилагательное: Ich verstehe nicht (я не понимаю). Das ist nicht weit.', 'kein отрицает существительное без «the»: Ich habe keine Zeit (у меня нет времени). Ich habe kein Auto.', 'Правило: если в утверждении ein / eine или нет артикля — в отрицании kein / keine.']
+        },
+        table: [['Ich verstehe.', 'Ich verstehe nicht.'], ['Das ist weit.', 'Das ist nicht weit.'], ['Ich habe ein Auto.', 'Ich habe kein Auto.'], ['Ich habe Zeit.', 'Ich habe keine Zeit.']],
+        ex: [
+          ['Ich spreche nicht gut Deutsch.', 'אני לא מדבר גרמנית טוב.', "I don't speak German well.", 'لا أتكلم الألمانية جيدًا.', 'Я плохо говорю по-немецки.'],
+          ['Es ist nicht teuer.', 'זה לא יקר.', "It's not expensive.", 'ليس غاليًا.', 'Это недорого.'],
+          ['Wir haben keine Reservierung.', 'אין לנו הזמנה.', "We don't have a reservation.", 'ليس لدينا حجز.', 'У нас нет брони.'],
+          ['Es gibt kein WLAN.', 'אין Wi-Fi.', "There's no Wi-Fi.", 'لا يوجد واي فاي.', 'Wi-Fi нет.']
+        ],
+        drills: [['Ich verstehe ___.', 'nicht', ['nicht', 'kein', 'keine']], ['Ich habe ___ Zeit.', 'keine', ['nicht', 'kein', 'keine']], ['Das ist ___ weit.', 'nicht', ['nicht', 'kein', 'keine']], ['Es gibt ___ Problem.', 'kein', ['nicht', 'kein', 'keine']]]
+      },
+      {
+        id: 'word-order', icon: '🧱', level: 'A1',
+        title: { he: 'סדר מילים: הפועל במקום השני', en: 'Word order: the verb comes second', ar: 'ترتيب الكلمات: الفعل في المكان الثاني', ru: 'Порядок слов: глагол на втором месте' },
+        explain: {
+          he: ['במשפט חיווי הפועל תמיד במקום השני: Ich fahre heute nach Berlin.', 'מתחילים במשהו אחר? הפועל עדיין שני, והנושא זז אחריו: Heute fahre ich nach Berlin.', 'כשיש שני פעלים, השני הולך לסוף: Ich möchte heute nach Berlin fahren.'],
+          en: ['In a statement the verb is always in second place: Ich fahre heute nach Berlin.', 'Start with something else? The verb stays second and the subject moves after it: Heute fahre ich nach Berlin.', 'With two verbs, the second goes to the end: Ich möchte heute nach Berlin fahren.'],
+          ar: ['في الجملة الخبرية يأتي الفعل دائمًا في المكان الثاني: Ich fahre heute nach Berlin.', 'إذا بدأت بشيء آخر يبقى الفعل ثانيًا وينتقل الفاعل بعده: Heute fahre ich nach Berlin.', 'مع فعلين يذهب الثاني إلى آخر الجملة: Ich möchte heute nach Berlin fahren.'],
+          ru: ['В утверждении глагол всегда на втором месте: Ich fahre heute nach Berlin.', 'Начали с другого слова? Глагол остаётся вторым, подлежащее встаёт после него: Heute fahre ich nach Berlin.', 'Если глаголов два, второй уходит в конец: Ich möchte heute nach Berlin fahren.']
+        },
+        table: [['1', 'Ich · Heute · Morgen'], ['2 (פועל / verb)', 'fahre'], ['…', 'ich / heute … nach Berlin']],
+        ex: [
+          ['Heute ist das Museum geschlossen.', 'היום המוזיאון סגור.', 'Today the museum is closed.', 'اليوم المتحف مغلق.', 'Сегодня музей закрыт.'],
+          ['Morgen fliege ich nach Hause.', 'מחר אני טס הביתה.', "Tomorrow I'm flying home.", 'غدًا أسافر إلى البيت.', 'Завтра я лечу домой.'],
+          ['Um sieben gibt es Frühstück.', 'בשבע יש ארוחת בוקר.', 'Breakfast is at seven.', 'الفطور في السابعة.', 'Завтрак в семь.'],
+          ['Ich möchte einen Kaffee trinken.', 'הייתי רוצה לשתות קפה.', "I'd like to drink a coffee.", 'أريد أن أشرب قهوة.', 'Я хочу выпить кофе.']
+        ],
+        drills: [['Heute ___ ich nach Berlin.', 'fahre', ['fahre', 'fahren', 'fährt']], ['Morgen ___ wir ins Museum.', 'gehen', ['gehen', 'geht', 'gehe']], ['Ich möchte Deutsch ___.', 'lernen', ['lerne', 'lernen', 'lernt']], ['Um acht ___ der Zug.', 'fährt', ['fahre', 'fährt', 'fahren']]]
+      },
+      {
+        id: 'questions', icon: '❓', level: 'A1',
+        title: { he: 'שאלות: W-Fragen ושאלות כן/לא', en: 'Questions: W-words and yes/no', ar: 'الأسئلة: أدوات W وأسئلة نعم/لا', ru: 'Вопросы: W-слова и да/нет' },
+        explain: {
+          he: ['מילות שאלה מתחילות ב-W: wo (איפה), wann (מתי), wie (איך), was (מה), wer (מי), woher (מאיפה), wie viel (כמה).', 'אחרי מילת השאלה בא הפועל: Wo ist das Gate? Wann schließt es?', 'שאלת כן/לא מתחילה בפועל: Haben Sie WLAN? Ist das weit?'],
+          en: ['Question words start with W: wo (where), wann (when), wie (how), was (what), wer (who), woher (where from), wie viel (how much).', 'The verb comes right after the question word: Wo ist das Gate? Wann schließt es?', 'A yes/no question starts with the verb: Haben Sie WLAN? Ist das weit?'],
+          ar: ['أدوات السؤال تبدأ بـ W: wo (أين)، wann (متى)، wie (كيف)، was (ماذا)، wer (من)، woher (من أين)، wie viel (كم).', 'يأتي الفعل بعد أداة السؤال مباشرة: Wo ist das Gate? Wann schließt es?', 'سؤال نعم/لا يبدأ بالفعل: Haben Sie WLAN? Ist das weit?'],
+          ru: ['Вопросительные слова начинаются на W: wo (где), wann (когда), wie (как), was (что), wer (кто), woher (откуда), wie viel (сколько).', 'Глагол идёт сразу после вопросительного слова: Wo ist das Gate? Wann schließt es?', 'Вопрос «да/нет» начинается с глагола: Haben Sie WLAN? Ist das weit?']
+        },
+        table: [['wo · wohin · woher', 'איפה · לאן · מאיפה / where · where to · from'], ['wann · wie · was', 'מתי · איך · מה / when · how · what'], ['wer · wie viel', 'מי · כמה / who · how much']],
+        ex: [
+          ['Wo ist die Toilette?', 'איפה השירותים?', 'Where is the toilet?', 'أين الحمّام؟', 'Где туалет?'],
+          ['Was kostet das?', 'כמה זה עולה?', 'What does it cost?', 'كم ثمنه؟', 'Сколько это стоит?'],
+          ['Wer ist das?', 'מי זה?', 'Who is that?', 'من هذا؟', 'Кто это?'],
+          ['Sprechen Sie Englisch?', 'אתה מדבר אנגלית?', 'Do you speak English?', 'هل تتكلم الإنجليزية؟', 'Вы говорите по-английски?']
+        ],
+        drills: [['___ ist der Bahnhof?', 'Wo', ['Wo', 'Wann', 'Wer']], ['___ schließt das Museum?', 'Wann', ['Wo', 'Wann', 'Was']], ['___ kommst du?', 'Woher', ['Woher', 'Wer', 'Was']], ['___ Sie Englisch?', 'Sprechen', ['Sprechen', 'Sprichst', 'Spreche']]]
+      },
+      {
+        id: 'modals', icon: '🙏', level: 'A1',
+        title: { he: 'können, möchten, müssen — "יכול", "רוצה", "חייב"', en: 'Können, möchten, müssen — can, would like, must', ar: 'können و möchten و müssen — يستطيع، يودّ، يجب', ru: 'Können, möchten, müssen — мочь, хотеть, быть должным' },
+        explain: {
+          he: ['können (יכול): ich kann, du kannst, er kann. möchten (הייתי רוצה): ich möchte, du möchtest, er möchte.', 'müssen (חייב): ich muss, du musst, er muss.', 'הפועל השני במקור, בסוף המשפט: Ich kann mit Karte zahlen. Ich möchte ein Foto machen.'],
+          en: ['können (can): ich kann, du kannst, er kann. möchten (would like): ich möchte, du möchtest, er möchte.', 'müssen (must): ich muss, du musst, er muss.', 'The second verb goes to the end, unchanged: Ich kann mit Karte zahlen. Ich möchte ein Foto machen.'],
+          ar: ['können (يستطيع): ich kann, du kannst, er kann. möchten (يودّ): ich möchte, du möchtest, er möchte.', 'müssen (يجب): ich muss, du musst, er muss.', 'الفعل الثاني في المصدر وفي آخر الجملة: Ich kann mit Karte zahlen. Ich möchte ein Foto machen.'],
+          ru: ['können (мочь): ich kann, du kannst, er kann. möchten (хотел бы): ich möchte, du möchtest, er möchte.', 'müssen (должен): ich muss, du musst, er muss.', 'Второй глагол — в инфинитиве в конце: Ich kann mit Karte zahlen. Ich möchte ein Foto machen.']
+        },
+        table: [['ich', 'kann · möchte · muss'], ['du', 'kannst · möchtest · musst'], ['er / sie', 'kann · möchte · muss'], ['wir / Sie', 'können · möchten · müssen']],
+        ex: [
+          ['Kann ich mit Karte zahlen?', 'אפשר לשלם בכרטיס?', 'Can I pay by card?', 'هل أستطيع الدفع بالبطاقة؟', 'Можно оплатить картой?'],
+          ['Ich möchte zwei Karten.', 'הייתי רוצה שני כרטיסים.', "I'd like two tickets.", 'أريد تذكرتين.', 'Я бы хотел два билета.'],
+          ['Wir müssen jetzt gehen.', 'אנחנו חייבים ללכת עכשיו.', 'We have to go now.', 'يجب أن نذهب الآن.', 'Нам пора идти.'],
+          ['Können Sie das wiederholen?', 'אפשר לחזור על זה?', 'Can you repeat that?', 'هل يمكنك أن تعيد ذلك؟', 'Вы можете повторить?']
+        ],
+        drills: [['___ ich ein Foto machen?', 'Kann', ['Kann', 'Kannst', 'Können']], ['Ich ___ einen Tee.', 'möchte', ['möchte', 'möchtest', 'möchten']], ['Du ___ hier links gehen.', 'musst', ['muss', 'musst', 'müssen']], ['Ich kann mit Karte ___.', 'zahlen', ['zahle', 'zahlt', 'zahlen']]]
+      },
+      {
+        id: 'accusative', icon: '🎯', level: 'A2',
+        title: { he: 'יחסת מושא: den, einen', en: 'The accusative: den, einen', ar: 'حالة المفعول به: den و einen', ru: 'Винительный падеж: den, einen' },
+        explain: {
+          he: ['כשהשם הוא המושא (מה רוצים, מחפשים, צריכים), רק הזכר משתנה: der ← den, ein ← einen.', 'Ich brauche einen Arzt. Ich suche den Bahnhof.', 'נקבה, סתמי ורבים נשארים: Ich nehme die Karte, das Zimmer, die Karten.'],
+          en: ['When a noun is the object (what you want, need, look for), only masculine changes: der → den, ein → einen.', 'Ich brauche einen Arzt. Ich suche den Bahnhof.', 'Feminine, neuter and plural stay the same: Ich nehme die Karte, das Zimmer, die Karten.'],
+          ar: ['عندما يكون الاسم مفعولًا به (ما تريده أو تحتاجه أو تبحث عنه) يتغير المذكر فقط: der ← den، ein ← einen.', 'Ich brauche einen Arzt. Ich suche den Bahnhof.', 'المؤنث والمحايد والجمع لا تتغير: Ich nehme die Karte, das Zimmer, die Karten.'],
+          ru: ['Когда существительное — дополнение (что хотите, ищете, нужно), меняется только мужской род: der → den, ein → einen.', 'Ich brauche einen Arzt. Ich suche den Bahnhof.', 'Женский, средний род и множественное число не меняются: Ich nehme die Karte, das Zimmer, die Karten.']
+        },
+        table: [['der Tisch → den Tisch', 'ein Tisch → einen Tisch'], ['die Karte → die Karte', 'eine Karte → eine Karte'], ['das Foto → das Foto', 'ein Foto → ein Foto']],
+        ex: [
+          ['Ich brauche einen Arzt.', 'אני צריך רופא.', 'I need a doctor.', 'أحتاج طبيبًا.', 'Мне нужен врач.'],
+          ['Wir suchen den Bahnhof.', 'אנחנו מחפשים את תחנת הרכבת.', 'We are looking for the station.', 'نبحث عن المحطة.', 'Мы ищем вокзал.'],
+          ['Einen Cappuccino, bitte.', 'קפוצ׳ינו, בבקשה.', 'A cappuccino, please.', 'كابتشينو من فضلك.', 'Капучино, пожалуйста.'],
+          ['Ich nehme die Suppe.', 'אני לוקח את המרק.', "I'll have the soup.", 'سآخذ الشوربة.', 'Я возьму суп.']
+        ],
+        drills: [['Ich brauche ___ Arzt.', 'einen', ['ein', 'eine', 'einen']], ['Wir suchen ___ Bahnhof.', 'den', ['der', 'den', 'das']], ['Ich nehme ___ Suppe.', 'die', ['der', 'die', 'den']], ['Haben Sie ___ Tisch für zwei?', 'einen', ['ein', 'einen', 'eine']]]
+      },
+      {
+        id: 'separable', icon: '✂️', level: 'A2',
+        title: { he: 'פעלים מתפצלים (ankommen)', en: 'Separable verbs (ankommen)', ar: 'الأفعال المنفصلة (ankommen)', ru: 'Отделяемые приставки (ankommen)' },
+        explain: {
+          he: ['לפעלים רבים יש תחילית שקופצת לסוף המשפט: ankommen (להגיע) ← Der Zug kommt um acht an.', 'עוד דוגמאות: anrufen (להתקשר), aufmachen (לפתוח), einsteigen (לעלות), mitnehmen (לקחת איתך).', 'במקור הפועל נשאר שלם: Ich möchte das mitnehmen.'],
+          en: ['Many verbs have a prefix that jumps to the end: ankommen (arrive) → Der Zug kommt um acht an.', 'More: anrufen (call), aufmachen (open), einsteigen (get on), mitnehmen (take along).', 'In the infinitive the verb stays whole: Ich möchte das mitnehmen.'],
+          ar: ['لكثير من الأفعال بادئة تقفز إلى آخر الجملة: ankommen (يصل) ← Der Zug kommt um acht an.', 'أمثلة أخرى: anrufen (يتصل)، aufmachen (يفتح)، einsteigen (يركب)، mitnehmen (يأخذ معه).', 'في المصدر يبقى الفعل كاملًا: Ich möchte das mitnehmen.'],
+          ru: ['У многих глаголов приставка уходит в конец: ankommen (прибывать) → Der Zug kommt um acht an.', 'Ещё: anrufen (звонить), aufmachen (открывать), einsteigen (садиться), mitnehmen (брать с собой).', 'В инфинитиве глагол остаётся целым: Ich möchte das mitnehmen.']
+        },
+        table: [['ankommen', 'Ich komme um acht an.'], ['anrufen', 'Ich rufe dich an.'], ['aufmachen', 'Wann macht das Museum auf?'], ['einsteigen', 'Bitte steigen Sie ein.']],
+        ex: [
+          ['Wann kommt der Bus an?', 'מתי האוטובוס מגיע?', 'When does the bus arrive?', 'متى يصل الباص؟', 'Когда приходит автобус?'],
+          ['Ich rufe ein Taxi an.', 'אני מזמין מונית בטלפון.', "I'm calling a taxi.", 'أتصل بتاكسي.', 'Я вызываю такси.'],
+          ['Das Geschäft macht um neun auf.', 'החנות נפתחת בתשע.', 'The shop opens at nine.', 'يفتح المحل في التاسعة.', 'Магазин открывается в девять.'],
+          ['Ich nehme den Kaffee mit.', 'אני לוקח את הקפה איתי.', "I'm taking the coffee with me.", 'آخذ القهوة معي.', 'Я беру кофе с собой.']
+        ],
+        drills: [['Der Zug kommt um acht ___.', 'an', ['an', 'auf', 'mit']], ['Wann macht die Apotheke ___?', 'auf', ['an', 'auf', 'ein']], ['Ich rufe dich morgen ___.', 'an', ['an', 'mit', 'auf']], ['Bitte steigen Sie ___.', 'ein', ['ein', 'an', 'auf']]]
+      },
+      {
+        id: 'perfekt', icon: '⏪', level: 'A2',
+        title: { he: 'עבר מדובר: Perfekt', en: 'Spoken past: the Perfekt', ar: 'الماضي المحكي: Perfekt', ru: 'Разговорное прошедшее: Perfekt' },
+        explain: {
+          he: ['בדיבור מספרים על העבר עם haben או sein + צורת עבר בסוף: Ich habe gegessen (אכלתי).', 'צורת העבר בדרך כלל ge-…-t: machen ← gemacht, kaufen ← gekauft. ויש חריגים: essen ← gegessen.', 'פעלי תנועה ושינוי מצב לוקחים sein: Ich bin gefahren. Ich bin angekommen.'],
+          en: ['In speech the past is haben or sein + a past participle at the end: Ich habe gegessen (I ate).', 'The participle is usually ge-…-t: machen → gemacht, kaufen → gekauft. Some are irregular: essen → gegessen.', 'Verbs of movement and change take sein: Ich bin gefahren. Ich bin angekommen.'],
+          ar: ['في الكلام يُعبَّر عن الماضي بـ haben أو sein + اسم المفعول في آخر الجملة: Ich habe gegessen (أكلت).', 'اسم المفعول غالبًا ge-…-t: machen ← gemacht، kaufen ← gekauft. وهناك شواذ: essen ← gegessen.', 'أفعال الحركة والتغيّر تأخذ sein: Ich bin gefahren. Ich bin angekommen.'],
+          ru: ['В разговоре прошлое — haben или sein + причастие в конце: Ich habe gegessen (я поел).', 'Причастие обычно ge-…-t: machen → gemacht, kaufen → gekauft. Есть неправильные: essen → gegessen.', 'Глаголы движения и изменения состояния — с sein: Ich bin gefahren. Ich bin angekommen.']
+        },
+        table: [['machen', 'ich habe gemacht'], ['kaufen', 'ich habe gekauft'], ['essen', 'ich habe gegessen'], ['fahren', 'ich bin gefahren']],
+        ex: [
+          ['Ich habe mich verlaufen.', 'הלכתי לאיבוד.', 'I got lost.', 'تهت.', 'Я заблудился.'],
+          ['Wir haben ein Zimmer gebucht.', 'הזמנו חדר.', 'We booked a room.', 'حجزنا غرفة.', 'Мы забронировали номер.'],
+          ['Ich bin mit dem Zug gefahren.', 'נסעתי ברכבת.', 'I went by train.', 'سافرت بالقطار.', 'Я ехал на поезде.'],
+          ['Hat es geschmeckt?', 'היה טעים?', 'Did you enjoy it?', 'هل أعجبك الطعام؟', 'Было вкусно?']
+        ],
+        drills: [['Ich ___ einen Kaffee getrunken.', 'habe', ['habe', 'bin', 'hat']], ['Wir ___ nach Berlin gefahren.', 'sind', ['haben', 'sind', 'ist']], ['Ich habe ein Foto ___.', 'gemacht', ['machen', 'gemacht', 'macht']], ['Er ___ spät angekommen.', 'ist', ['hat', 'ist', 'bin']]]
+      }
+    ],
     fr: [
       {
         id: 'etre-avoir', icon: '🧩', level: 'A1',

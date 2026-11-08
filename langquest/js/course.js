@@ -273,7 +273,8 @@
           ${list.map((u, i) => {
             const p = LQStore.grammarProgress(lang, u.id);
             const can = premium && open && unitOpen(lang, i);
-            return `
+            const sep = u.level === 'B1' && (i === 0 || list[i - 1].level !== 'B1') ? `<li class="unit-sep"><span>B1</span> ${t('gr.b1Sep')}</li>` : '';
+            return `${sep}
               <li class="unit ${p.done ? 'done' : can ? 'open' : 'locked'}">
                 <span class="unit-ico">${can || p.done ? u.icon : '🔒'}</span>
                 <div class="unit-body"><b>${i + 1}. ${esc(local(u.title))}</b><small class="muted">${u.level}${p.done ? ' · ✅' : ''}</small></div>

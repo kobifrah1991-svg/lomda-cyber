@@ -187,12 +187,13 @@
     en: ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve'],
     es: ['cero', 'uno', 'dos', 'tres', 'cuatro', 'cinco', 'seis', 'siete', 'ocho', 'nueve', 'diez', 'once', 'doce'],
     it: ['zero', 'uno', 'due', 'tre', 'quattro', 'cinque', 'sei', 'sette', 'otto', 'nove', 'dieci', 'undici', 'dodici'],
-    fr: ['zero', 'un', 'deux', 'trois', 'quatre', 'cinq', 'six', 'sept', 'huit', 'neuf', 'dix', 'onze', 'douze']
+    fr: ['zero', 'un', 'deux', 'trois', 'quatre', 'cinq', 'six', 'sept', 'huit', 'neuf', 'dix', 'onze', 'douze'],
+    de: ['null', 'eins', 'zwei', 'drei', 'vier', 'fünf', 'sechs', 'sieben', 'acht', 'neun', 'zehn', 'elf', 'zwölf']
   };
 
   function normWord(w, lang) {
     // accents, Hebrew niqqud and Arabic harakat are ignored; any script's letters count
-    let s = (w || '').toLowerCase().replace(/[’ʼ]/g, "'").normalize('NFD').replace(/[\u0300-\u036f\u0591-\u05c7\u064b-\u065f\u0670]/g, '').replace(/[^\p{L}\p{N}']/gu, '')
+    let s = (w || '').toLowerCase().replace(/[’ʼ]/g, "'").normalize('NFD').replace(/[\u0300-\u036f\u0591-\u05c7\u064b-\u065f\u0670]/g, '').replace(/ß/g, 'ss').replace(/[^\p{L}\p{N}']/gu, '')
       // Arabic spelling variants the recognizer mixes up: hamza seats, alif maqsura, taa marbuta
       .replace(/[أإآ]/g, 'ا').replace(/ى/g, 'ي').replace(/ة/g, 'ه');
     const nums = NUMBERS[(lang || '').slice(0, 2)];

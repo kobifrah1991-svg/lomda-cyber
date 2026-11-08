@@ -18,8 +18,19 @@
     window.open(url, '_blank', 'noopener');
   }
 
+  /** Home-screen widget (android WidgetPlugin): streak, today's goal, next step — sent only when it changed. */
+  let lastWidget = '';
+  function updateWidget(data) {
+    const w = plugin('TedraWidget');
+    if (!w) return;
+    const sig = JSON.stringify(data);
+    if (sig === lastWidget) return;
+    lastWidget = sig;
+    w.update(data).catch(() => { lastWidget = ''; });
+  }
+
   document.documentElement.classList.toggle('native', isNative);
   document.documentElement.dataset.platform = platform;
 
-  window.LQNative = { isNative, platform, plugin, openExternal };
+  window.LQNative = { isNative, platform, plugin, openExternal, updateWidget };
 })();

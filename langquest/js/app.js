@@ -19,11 +19,12 @@
     LQBoss.stop();
     LQTutor.stop();
     LQExtras.stopListen();
+    LQCheckpoint.stop();
     LQAudio.stop();
     LQUI.closePop();
     current = name;
     // focus mode: lessons, conversations and grammar hide the header's counters
-    document.body.classList.toggle('focus', ['lesson', 'boss', 'grammar', 'review', 'chat', 'listen'].includes(name));
+    document.body.classList.toggle('focus', ['lesson', 'boss', 'grammar', 'review', 'chat', 'listen', 'checkpoint'].includes(name));
     window.scrollTo({ top: 0, behavior: 'smooth' });
     const back = () => go('map');
     if ((name === 'lesson' || name === 'boss') && !LQCommerce.canOpen(STATIONS.findIndex(x => x.id === params.station))) {
@@ -40,6 +41,7 @@
       LQCourse.start(view, params.lang, params.unit, back);
     }
     else if (name === 'vault') renderVault();
+    else if (name === 'checkpoint') LQCheckpoint.start(view, params.lang, params.part, back);
     else if (name === 'listen') LQExtras.listen(view, lang(), back);
     else if (name === 'dict') LQExtras.dictionary(view, lang(), back);
     else if (name === 'community') {
@@ -81,6 +83,21 @@
     $('#hdrVault').innerHTML = `${LQIcons.svg('book', 20)}${due ? `<i class="badge">${due}</i>` : ''}`;
     $('#hdrSettings').innerHTML = LQIcons.svg('settings', 20);
     $('#hdrInstall').innerHTML = LQIcons.svg('download', 20);
+    widget(L, st);
+  }
+
+  /** What the Android home-screen widget shows, in the learner's language. */
+  function widget(L, st) {
+    if (!window.LQNative || !LQNative.isNative) return;
+    const next = STATIONS.find((x, i) => LQStore.isStationUnlocked(L.id, STATIONS, i) && !LQStore.stationProgress(L.id, x.id).lesson);
+    LQNative.updateWidget({
+      streak: st.count,
+      doneToday: !!st.doneToday,
+      goalPct: Math.min(100, Math.round(100 * st.todaySec / st.goalSec)),
+      title: t('widget.title', { n: st.count, flag: L.flag }),
+      sub: st.doneToday ? t('fin.goalDone') : t('home.today', { m: Math.floor(st.todaySec / 60), g: st.goalSec / 60 }),
+      cta: next ? `${t('home.continue')}: ${f(next, 'name')} ›` : `${t('map.review')} ›`
+    });
   }
 
   /* ---------- world map ---------- */
@@ -139,7 +156,7 @@
               </div>
               <div class="boss-stop ${bossState}" style="--x:${(x1 + x2) / 2}">
                 <button class="boss-btn" data-bossstop="${x.id}" aria-label="${esc(t('boss.name') + ' · ' + f(x, 'name'))}" title="${esc(t('boss.name'))}">${LQIcons.svg(bossState === 'locked' ? 'lock' : 'crown', 18)}</button>
-              </div>`;
+              </div>${checkpointStop(L, i, x2)}`;
           }).join('')}
         </div>
       </section>
@@ -188,6 +205,11 @@
     if (dueBtn) dueBtn.onclick = () => (nextStation ? go('lesson', { lang: L.id, station: nextStation.id }) : go(due ? 'review' : 'map'));
     $$('[data-stop]', view).forEach(b => b.onclick = () => openStop(L, b.dataset.stop));
     $$('[data-bossstop]', view).forEach(b => b.onclick = () => openStop(L, b.dataset.bossstop, true));
+    $$('[data-cp]', view).forEach(b => b.onclick = () => {
+      const cp = LQCheckpoint.PARTS.find(p => p.id === b.dataset.cp);
+      if (LQCheckpoint.state(L.id, cp.id) === 'locked') LQUI.toast(t('cp.locked', { a: cp.from + 1, b: cp.to + 1 }));
+      else go('checkpoint', { lang: L.id, part: cp.id });
+    });
     $$('[data-unit]', view).forEach(b => b.onclick = () => go('grammar', { lang: L.id, unit: b.dataset.unit }));
     $$('[data-act=paywall]', view).forEach(b => b.onclick = openPaywall);
     renderCloudBoxes(view);
@@ -197,6 +219,19 @@
     const r = $('[data-act=review]', view);
     if (r) r.onclick = () => go('review');
     $('[data-act=vault]', view).onclick = () => go('vault');
+  }
+
+  /** After every fifth stop: a checkpoint that mixes the last five stops' phrases. */
+  function checkpointStop(L, i, x) {
+    const cp = LQCheckpoint.PARTS.find(p => p.to === i);
+    if (!cp) return '';
+    const st = LQCheckpoint.state(L.id, cp.id);
+    const label = t('cp.title', { a: cp.from + 1, b: cp.to + 1 });
+    return `
+              <div class="cp-stop ${st}" style="--x:${x}">
+                <button class="cp-btn" data-cp="${cp.id}" aria-label="${esc(label)}" title="${esc(label)}">${LQIcons.svg(st === 'locked' ? 'lock' : 'trophy', 24)}${st === 'done' ? `<span class="stop-check">${LQIcons.svg('check', 12)}</span>` : ''}</button>
+                <span class="stop-label">${esc(label)}</span>
+              </div>`;
   }
 
   // the map's path swings left and right (in units of the trail's step width)
@@ -617,27 +652,54 @@
         <button class="btn primary big-cta pw-go" data-buy="yearly">${C.CONFIG.trialDays ? t('pay.startTrial') : t('pay.buy')}</button>
         <button class="linkish" data-buy="lifetime">${t('pay.lifetimeLink', { p: C.priceLabel(plan('lifetime')) })}</button>
         ${C.demoMode() ? `<p class="note warn small">🧪 ${t('pay.demo')}</p>` : ''}
+        ${C.playBilling() ? `<p class="muted small center">${t('pay.playNote')}</p>
+        <button class="linkish" data-act="restore-play">${t('pay.restorePlay')}</button>` : `
         <details class="restore"><summary>${t('pay.restore')}</summary>
           <div class="row"><input class="key-input" dir="ltr" placeholder="${t('pay.restorePh')}"><button class="btn sm" data-act="activate">${t('pay.activate')}</button></div>
-        </details>
+        </details>`}
         <button class="icon-btn pw-close" data-act="close" aria-label="${t('common.close')}">${LQIcons.svg('close', 18)}</button>
       </div>`, body => {
       let chosen = 'yearly';
       const pick = id => { chosen = id; $$('.pw-plan', body).forEach(x => x.classList.toggle('on', x.dataset.buy === id)); };
       pick('yearly');
       $$('.pw-plan', body).forEach(b => b.onclick = () => pick(b.dataset.buy));
-      const buy = id => {
-        const r = C.buy(id);
-        if (r === 'demo') unlocked();
+      const outcome = r => {
+        if (r === 'demo' || r === 'play') unlocked();
         else if (r === 'unavailable') toast(t('pay.unavailable'));
+        else if (r === 'signin') { closeModal(); toast(t('pay.signInFirst'), 4000); openSettings(); }
+        else if (r === 'pending') toast(t('pay.pending'), 4000);
+        else if (r === 'error') toast(t('pay.error'));
+      };
+      const buy = async id => {
+        const btns = $$('[data-buy]', body);
+        btns.forEach(b => { b.disabled = true; });
+        try { outcome(await C.buy(id)); } finally { btns.forEach(b => { b.disabled = false; }); }
       };
       $('.pw-go', body).onclick = () => buy(chosen);
       $('[data-buy=lifetime].linkish', body).onclick = () => buy('lifetime');
-      $('[data-act=activate]', body).onclick = async () => {
+      const act = $('[data-act=activate]', body);
+      if (act) act.onclick = async () => {
         const key = $('.key-input', body).value.trim();
         if (!key) return;
         try { await C.restore(key); unlocked(); } catch { toast(t('pay.error')); }
       };
+      const rp = $('[data-act=restore-play]', body);
+      if (rp) rp.onclick = async () => {
+        const r = await C.restorePlay().catch(() => 'error');
+        if (r === 'none') toast(t('pay.nothingToRestore')); else outcome(r);
+      };
+      // Play's own prices (local currency) replace the list prices once they are loaded
+      if (C.playBilling()) C.loadStorePrices().then(ok => {
+        if (!ok || !body.isConnected) return;
+        const y = $('[data-buy=yearly].pw-plan small.muted', body);
+        if (y) y.textContent = t('pay.billedYearly', { p: C.priceLabel(plan('yearly')) });
+        const m = $('[data-buy=monthly] .pp-price', body);
+        if (m) m.firstChild.textContent = C.priceLabel(plan('monthly'));
+        const yp = $('[data-buy=yearly] .pp-price', body);
+        if (yp) yp.innerHTML = `${esc(C.priceLabel(plan('yearly')))}<small> ${t('pay.perYearShort')}</small>`;
+        const l = $('[data-buy=lifetime].linkish', body);
+        if (l) l.textContent = t('pay.lifetimeLink', { p: C.priceLabel(plan('lifetime')) });
+      });
       $('[data-act=close]', body).onclick = closeModal;
     });
   }

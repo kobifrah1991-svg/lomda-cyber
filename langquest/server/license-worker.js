@@ -4,6 +4,7 @@
  *  GET /verify?token=…           re-validates a license key (subscription still active?) and refreshes it
  *  POST /tutor                   AI conversation partner for Premium licenses (see tutor.js)
  *  POST /link                    { idToken, token } → puts a paid license on the learner's Firebase account (see accounts.js)
+ *  POST /revenuecat              RevenueCat webhook: Google Play purchases → the learner's account (see revenuecat.js)
  *
  *  Secrets / vars (wrangler secret put …):
  *    STRIPE_SECRET_KEY   sk_live_… (or sk_test_…)
@@ -19,6 +20,7 @@
  */
 import { tutorTurn, underDailyCap, makeClient } from './tutor.js';
 import { verifyIdToken, writeEntitlement, activeEntitlement } from './accounts.js';
+import { handleRevenueCat } from './revenuecat.js';
 
 const enc = new TextEncoder();
 const b64url = buf => btoa(String.fromCharCode(...new Uint8Array(buf))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
@@ -141,6 +143,9 @@ export default {
     const url = new URL(req.url);
     if (url.pathname === '/link' && req.method === 'POST') {
       try { return await handleLink(req, env, h); } catch { return json({ ok: false, error: 'server_error' }, 502, h); }
+    }
+    if (url.pathname === '/revenuecat' && req.method === 'POST') {
+      try { return await handleRevenueCat(req, env, h); } catch { return json({ ok: false, error: 'server_error' }, 502, h); }
     }
     if (url.pathname === '/tutor' && req.method === 'POST') {
       try { return await handleTutor(req, env, h); } catch { return json({ ok: false, error: 'server_error' }, 502, h); }

@@ -15,6 +15,8 @@
 | `img/teachers/felix.webp` | Félix, 27 | צרפתית קנדית · מונטריאול |
 | `img/teachers/alba.webp` | Alba, 23 | ספרדית אירופאית · מדריד |
 | `img/teachers/diego.webp` | Diego, 25 | ספרדית מקסיקנית · מקסיקו סיטי |
+| `img/teachers/martina.webp` | Martina, 24 | איטלקית · רומא |
+| `img/teachers/jonas.webp` | Jonas, 27 | גרמנית · ברלין |
 | `img/npc/airport.webp` | פקיד/ת גבולות | דמות Boss — שדה תעופה |
 | `img/npc/hotel.webp` | פקידת קבלה | דמות Boss — מלון |
 | `img/npc/restaurant.webp` | מלצר | דמות Boss — מסעדה |
@@ -41,6 +43,8 @@ no text, no watermark, square 1:1
 - **Félix** — `a 27-year-old French-Canadian man from Montréal, ski instructor, short sandy hair, friendly grin, red flannel shirt, blurred snowy Montréal street behind him`
 - **Alba** — `a 23-year-old Spanish woman from Madrid, design student, long dark hair, small gold earrings, cream linen shirt, blurred sunny Madrid plaza behind her`
 - **Diego** — `a 25-year-old Mexican man, young chef, short black hair, warm smile, dark apron over a white shirt, blurred colorful Mexico City market behind him`
+- **Martina** — `a 24-year-old Italian woman from Rome, tour guide, long chestnut hair, light blouse, blurred Roman piazza with a gelato shop behind her`
+- **Jonas** — `a 27-year-old German man from Berlin, drummer and barista, short dark-blond hair, light stubble, grey hoodie, blurred Berlin café with street art behind him`
 - **airport** — `a 35-year-old border control officer in a neat uniform, professional and kind expression, blurred airport hall behind`
 - **hotel** — `a 28-year-old hotel receptionist in an elegant uniform, welcoming smile, blurred modern hotel lobby behind`
 - **restaurant** — `a 30-year-old waiter in a white shirt and black apron, blurred cozy restaurant behind`
